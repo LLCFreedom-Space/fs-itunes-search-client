@@ -1,0 +1,947 @@
+openapi: 3.0.3
+info:
+  title: iTunes Search API
+  version: 1.0.0
+  description: >-
+    The Search API allows you to place search fields in your website to search for content within the iTunes Store, App Store, iBooks Store and Mac App Store.
+    You can search for a variety of content; including apps, iBooks, movies, podcasts, music, music videos, audiobooks, and TV shows.
+    You can also call an ID-based lookup request to create mappings between your content library and the digital catalog.
+    Developers may use promotional content in the API, including previews of songs, music videos, album art and App icons only to promote store content and not for entertainment purposes.
+    Use of sound samples and other assets from the API must be proximate to a store badge.
+    Terms and conditions apply.
+  termsOfService: https://performance-partners.apple.com/search-api
+  contact:
+    name: Apple Inc.
+    url: https://performance-partners.apple.com/search-api
+servers:
+  - url: https://itunes.apple.com
+    description: iTunes search production url
+externalDocs:
+  description: Find out more
+  url: https://performance-partners.apple.com/search-api
+tags:
+  - name: Lookup
+    description: Lookup Examples
+    externalDocs:
+      description: Find out more
+      url: https://developer.apple.com/library/archive/documentation/AudioVideo/Conceptual/iTuneSearchAPI/LookupExamples.html#//apple_ref/doc/uid/TP40017632-CH7-SW1
+paths:
+  /lookup:
+    get:
+      tags:
+        - Lookup
+      summary: Get by bundleId
+      description: >-
+        Lookup request to search for content in the App Store based on app bundle IDs.
+      operationId: getByBundleId
+      parameters:
+        - $ref: '#/components/parameters/BundleIdQuery'
+        - $ref: '#/components/parameters/CountryQuery'
+      responses:
+        '200':
+          description: Success response with the retrieved message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppResponse'
+
+              examples:
+                HomeExample:
+                  $ref: '#/components/examples/HomeExample'
+                JournalExample:
+                  $ref: '#/components/examples/JournalExample'
+                KeynoteExample:
+                  $ref: '#/components/examples/KeynoteExample'
+components:
+  # Reusable path, query, header and cookie parameters
+  parameters:
+    BundleIdQuery:
+      name: bundleId
+      description: The app bundle identifier.
+      required: true
+      in: query
+      schema:
+        type: string
+      example: com.apple.store.Jolly
+    CountryQuery:
+      name: country
+      description: The country in alpha 2 format.
+      required: false
+      in: query
+      schema:
+        type: string
+      example: us
+  # Reusable schemas (data models)
+  schemas:
+    AppResponse:
+      type: object
+      description: Application response object.
+      properties:
+        resultCount:
+          type: integer
+          description: count
+          example: 1
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Result'
+    Result:
+      type: object
+      description: Application info object.
+      properties:
+        screenshotUrls:
+          type: array
+          nullable: true
+          items:
+            type: string
+            nullable: true
+        ipadScreenshotUrls:
+          type: array
+          nullable: true
+          items:
+            type: string
+            nullable: true
+        appletvScreenshotUrls:
+          type: array
+          nullable: true
+          items:
+            type: string
+            nullable: true
+        artworkUrl60:
+          type: string
+          nullable: true
+          description: A URL for the artwork associated with the returned media type, sized to 60×60 pixels.
+        artworkUrl512:
+          type: string
+          nullable: true
+          description: A URL for the artwork associated with the returned media type, sized to 512×512 pixels.
+        artworkUrl100:
+          type: string
+          nullable: true
+          description: A URL for the artwork associated with the returned media type, sized to 100×100 pixels.
+        artistViewUrl:
+          type: string
+          nullable: true
+        supportedDevices:
+          type: array
+          nullable: true
+          items:
+            type: string
+            nullable: true
+        advisories:
+          type: array
+          nullable: true
+          items:
+            type: string
+            nullable: true
+        isGameCenterEnabled:
+          type: boolean
+          nullable: true
+        features:
+          type: array
+          nullable: true
+          items:
+            type: string
+            nullable: true
+        kind:
+          type: string
+          nullable: true
+          description: The kind of content returned by the search request.
+        averageUserRatingForCurrentVersion:
+          type: number
+          nullable: true
+        averageUserRating:
+          type: number
+          nullable: true
+        trackCensoredName:
+          type: string
+          nullable: true
+        languageCodesISO2A:
+          type: array
+          nullable: true
+          items:
+            type: string
+            nullable: true
+        fileSizeBytes:
+          type: string
+          nullable: true
+        sellerUrl:
+          type: string
+          nullable: true
+        formattedPrice:
+          type: string
+          nullable: true
+        contentAdvisoryRating:
+          type: string
+          nullable: true
+        userRatingCountForCurrentVersion:
+          type: integer
+          nullable: true
+        trackViewUrl:
+          type: string
+          nullable: true
+        trackContentRating:
+          type: string
+          nullable: true
+        minimumOsVersion:
+          type: string
+          nullable: true
+        currentVersionReleaseDate:
+          type: string
+          nullable: true
+        releaseNotes:
+          type: string
+          nullable: true
+        artistId:
+          type: integer
+          nullable: true
+        artistName:
+          type: string
+          nullable: true
+          description: The name of the artist returned by the search request.
+        genres:
+          type: array
+          nullable: true
+          items:
+            type: string
+            nullable: true
+        price:
+          type: number
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        genreIds:
+          type: array
+          nullable: true
+          items:
+            type: string
+            nullable: true
+        trackId:
+          type: integer
+          nullable: true
+        trackName:
+          type: string
+          nullable: true
+          description: The name of the track, song, video, TV episode, and so on returned by the search request.
+        isVppDeviceBasedLicensingEnabled:
+          type: boolean
+          nullable: true
+        bundleId:
+          type: string
+          nullable: true
+        releaseDate:
+          type: string
+          nullable: true
+        currency:
+          type: string
+          nullable: true
+        sellerName:
+          type: string
+          nullable: true
+        primaryGenreName:
+          type: string
+          nullable: true
+        primaryGenreId:
+          type: integer
+          nullable: true
+        version:
+          type: string
+          nullable: true
+        wrapperType:
+          type: string
+          nullable: true
+          description: The name of the object returned by the search request.
+        userRatingCount:
+          type: integer
+          nullable: true
+  # Reusable examples
+  examples:
+    HomeExample:
+      value:
+        resultCount: 1
+        results:
+          - isGameCenterEnabled: false
+            screenshotUrls:
+              - https://is1-ssl.mzstatic.com/image/thumb/PurpleSource116/v4/df/35/82/df3582d6-6d1d-4031-95d8-2ab0ea0253b7/5e3ead42-1220-4db6-8463-7c03ef3c25f1_11.png/392x696bb.png
+              - https://is1-ssl.mzstatic.com/image/thumb/PurpleSource126/v4/36/9d/f9/369df96d-0dc6-b323-98f7-5d470c226b10/d7a4a04c-0ff2-405e-b033-b7d6794adfd0_22.png/392x696bb.png
+              - https://is1-ssl.mzstatic.com/image/thumb/PurpleSource126/v4/be/69/29/be6929b3-3106-89ae-386f-3bd9a523e0df/542eeab3-89bf-479a-8064-87e3c19fd3ff_33.png/392x696bb.png
+              - https://is1-ssl.mzstatic.com/image/thumb/PurpleSource116/v4/77/8e/be/778ebe11-9148-8fdd-c603-6e801314f3bb/46dea7ef-ae09-4ec9-8961-ebca246ab2b3_44.png/392x696bb.png
+              - https://is1-ssl.mzstatic.com/image/thumb/PurpleSource116/v4/c7/76/51/c77651d2-dfa3-d4c0-0716-ecc222e24061/a0a216d3-7056-43a8-bd44-e213a645de1d_55.png/392x696bb.png
+            ipadScreenshotUrls:
+              - https://is1-ssl.mzstatic.com/image/thumb/Purple116/v4/5c/25/f5/5c25f5a4-5c8b-a734-4a2d-20a6b2c1a698/e3b66de8-5fdb-4edc-8f4d-352f50a6e67d_1.PNG/552x414bb.png
+              - https://is1-ssl.mzstatic.com/image/thumb/Purple126/v4/de/d2/db/ded2db55-6d9c-fd51-4284-13b639857864/6b4d7cfa-2fe2-4891-ac4e-6257dcece4f5_IMG_0021.PNG/552x414bb.png
+              - https://is1-ssl.mzstatic.com/image/thumb/Purple116/v4/02/0f/8d/020f8df6-7e3c-91c5-729d-4bbebe01aacf/038d0dac-17df-4a48-9df5-67031ce7c0a7_IMG_0022.PNG/552x414bb.png
+              - https://is1-ssl.mzstatic.com/image/thumb/PurpleSource116/v4/73/01/d1/7301d17a-09e0-d9fe-92f0-f526df4254e3/172526b4-f0dc-410d-b88b-57c478028f2a_5.PNG/552x414bb.png
+            appletvScreenshotUrls: [ ]
+            artworkUrl60: https://is1-ssl.mzstatic.com/image/thumb/Purple116/v4/8c/38/42/8c384288-9460-abc9-3952-44d4c8a408e8/AppIcon-0-0-1x_U007emarketing-0-7-0-85-220.png/60x60bb.jpg
+            artworkUrl512: https://is1-ssl.mzstatic.com/image/thumb/Purple116/v4/8c/38/42/8c384288-9460-abc9-3952-44d4c8a408e8/AppIcon-0-0-1x_U007emarketing-0-7-0-85-220.png/512x512bb.jpg
+            artworkUrl100: https://is1-ssl.mzstatic.com/image/thumb/Purple116/v4/8c/38/42/8c384288-9460-abc9-3952-44d4c8a408e8/AppIcon-0-0-1x_U007emarketing-0-7-0-85-220.png/100x100bb.jpg
+            artistViewUrl: https://apps.apple.com/us/developer/apple/id284417353?mt=12&uo=4
+            features:
+              - iosUniversal
+            advisories: [ ]
+            supportedDevices:
+              - iPhone5s-iPhone5s
+              - iPadAir-iPadAir
+              - iPadAirCellular-iPadAirCellular
+              - iPadMiniRetina-iPadMiniRetina
+              - iPadMiniRetinaCellular-iPadMiniRetinaCellular
+              - iPhone6-iPhone6
+              - iPhone6Plus-iPhone6Plus
+              - iPadAir2-iPadAir2
+              - iPadAir2Cellular-iPadAir2Cellular
+              - iPadMini3-iPadMini3
+              - iPadMini3Cellular-iPadMini3Cellular
+              - iPodTouchSixthGen-iPodTouchSixthGen
+              - iPhone6s-iPhone6s
+              - iPhone6sPlus-iPhone6sPlus
+              - iPadMini4-iPadMini4
+              - iPadMini4Cellular-iPadMini4Cellular
+              - iPadPro-iPadPro
+              - iPadProCellular-iPadProCellular
+              - iPadPro97-iPadPro97
+              - iPadPro97Cellular-iPadPro97Cellular
+              - iPhoneSE-iPhoneSE
+              - iPhone7-iPhone7
+              - iPhone7Plus-iPhone7Plus
+              - iPad611-iPad611
+              - iPad612-iPad612
+              - iPad71-iPad71
+              - iPad72-iPad72
+              - iPad73-iPad73
+              - iPad74-iPad74
+              - iPhone8-iPhone8
+              - iPhone8Plus-iPhone8Plus
+              - iPhoneX-iPhoneX
+              - iPad75-iPad75
+              - iPad76-iPad76
+              - iPhoneXS-iPhoneXS
+              - iPhoneXSMax-iPhoneXSMax
+              - iPhoneXR-iPhoneXR
+              - iPad812-iPad812
+              - iPad834-iPad834
+              - iPad856-iPad856
+              - iPad878-iPad878
+              - Watch4-Watch4
+              - iPadMini5-iPadMini5
+              - iPadMini5Cellular-iPadMini5Cellular
+              - iPadAir3-iPadAir3
+              - iPadAir3Cellular-iPadAir3Cellular
+              - iPodTouchSeventhGen-iPodTouchSeventhGen
+              - iPhone11-iPhone11
+              - iPhone11Pro-iPhone11Pro
+              - iPadSeventhGen-iPadSeventhGen
+              - iPadSeventhGenCellular-iPadSeventhGenCellular
+              - iPhone11ProMax-iPhone11ProMax
+              - iPhoneSESecondGen-iPhoneSESecondGen
+              - iPadProSecondGen-iPadProSecondGen
+              - iPadProSecondGenCellular-iPadProSecondGenCellular
+              - iPadProFourthGen-iPadProFourthGen
+              - iPadProFourthGenCellular-iPadProFourthGenCellular
+              - iPhone12Mini-iPhone12Mini
+              - iPhone12-iPhone12
+              - iPhone12Pro-iPhone12Pro
+              - iPhone12ProMax-iPhone12ProMax
+              - iPadAir4-iPadAir4
+              - iPadAir4Cellular-iPadAir4Cellular
+              - iPadEighthGen-iPadEighthGen
+              - iPadEighthGenCellular-iPadEighthGenCellular
+              - iPadProThirdGen-iPadProThirdGen
+              - iPadProThirdGenCellular-iPadProThirdGenCellular
+              - iPadProFifthGen-iPadProFifthGen
+              - iPadProFifthGenCellular-iPadProFifthGenCellular
+              - iPhone13Pro-iPhone13Pro
+              - iPhone13ProMax-iPhone13ProMax
+              - iPhone13Mini-iPhone13Mini
+              - iPhone13-iPhone13
+              - iPadMiniSixthGen-iPadMiniSixthGen
+              - iPadMiniSixthGenCellular-iPadMiniSixthGenCellular
+              - iPadNinthGen-iPadNinthGen
+              - iPadNinthGenCellular-iPadNinthGenCellular
+              - iPhoneSEThirdGen-iPhoneSEThirdGen
+              - iPadAirFifthGen-iPadAirFifthGen
+              - iPadAirFifthGenCellular-iPadAirFifthGenCellular
+              - iPhone14-iPhone14
+              - iPhone14Plus-iPhone14Plus
+              - iPhone14Pro-iPhone14Pro
+              - iPhone14ProMax-iPhone14ProMax
+              - iPadTenthGen-iPadTenthGen
+              - iPadTenthGenCellular-iPadTenthGenCellular
+              - iPadPro11FourthGen-iPadPro11FourthGen
+              - iPadPro11FourthGenCellular-iPadPro11FourthGenCellular
+              - iPadProSixthGen-iPadProSixthGen
+              - iPadProSixthGenCellular-iPadProSixthGenCellular
+              - iPhone15-iPhone15
+              - iPhone15Plus-iPhone15Plus
+              - iPhone15Pro-iPhone15Pro
+              - iPhone15ProMax-iPhone15ProMax
+            kind: software
+            releaseNotes: Bug Fixes and Feature Enhancements
+            averageUserRatingForCurrentVersion: 2.20705
+            averageUserRating: 2.20705
+            trackCensoredName: Home
+            languageCodesISO2A:
+              - AR
+              - CA
+              - HR
+              - CS
+              - DA
+              - NL
+              - EN
+              - FI
+              - FR
+              - DE
+              - EL
+              - HE
+              - HI
+              - HU
+              - ID
+              - IT
+              - JA
+              - KO
+              - MS
+              - NB
+              - PL
+              - PT
+              - RO
+              - RU
+              - ZH
+              - SK
+              - ES
+              - SV
+              - TH
+              - ZH
+              - TR
+              - UK
+              - VI
+            fileSizeBytes: '1631232'
+            formattedPrice: Free
+            contentAdvisoryRating: 4+
+            userRatingCountForCurrentVersion: 4192
+            trackViewUrl: 'https://apps.apple.com/us/app/home/id1110145103?uo=4'
+            trackContentRating: 4+
+            sellerName: Apple Inc.
+            description: >-
+              Easily and securely control your smart home using your iPhone, iPad, Apple
+              Watch, HomePod, Apple TV, and Mac.
+              Features
+              Home tab makes it easier to navigate, organize, view and control all your
+              smart home accessories.
+              Categories for climate, lights, security, speakers and TVs, and water
+              allow for quick access to all the accessories for that specific category.
+              A multi-camera view displays up to four cameras in the Home tab and you
+              can scroll to see any additional cameras.
+              Grid Forecast uses live data from your local electric grid to show when
+              it’s running on cleaner sources so you can plan when to charge devices or
+              run appliances. (Contiguous US Only)
+              Activity History lets you see a recent history for garage door, door lock,
+              security systems, and contact sensor events*
+              Siri makes it easy to use your voice to control accessories. Say a phrase
+              like “Lock the front door,” “Play jazz in the living room,” or create a
+              scene and say “Good night” to turn off all your lights.
+              Widgets on iPhone and iPad give you the ability to see the status of your
+              home and access relevant accessories.
+              Control Center gives you quick access to control your favorite accessories
+              and scenes.
+              Home app on Apple Watch displays accessories you'll most likely need at
+              top for immediate access and then all accessories in favorites, cameras,
+              and rooms.
+              HomePod or other AirPlay-enabled speakers can be added in the Home app to
+              control your smart home and play music in any room in your house.
+              HomePod and Apple TV act as a home hub to manage your home while you’re
+              away. Automatically run scenes and control accessories based on your
+              location, the time of day, a sensor detection, or the action of an
+              accessory.
+              HomeKit Secure Video** lets you view live video and recordings as well as
+              get rich notifications when people, pets, vehicles, or package deliveries
+              are detected from your security cameras or video doorbell. View a 10-day
+              recording history in the Home app, and you can share or save recordings.
+              Adaptive lighting** lets you set compatible lightbulbs to automatically
+              adjust their color temperature throughout the day to help maximize comfort
+              and productivity. Wake up in the morning to warm colors, stay alert midday
+              with cooler tones, and wind down at night by removing blue light.
+              Accessories compatible with the Matter smart home connectivity standard
+              are supported seamlessly in the Home app alongside your HomeKit-enabled
+              accessories, so you can control them easily and securely using the Home
+              app and Siri on your Apple devices.
+              *Available for homes using the new Home architecture.
+              **Requires HomePod or Apple TV as a home hub and an iCloud+ plan.
+            isVppDeviceBasedLicensingEnabled: true
+            currency: USD
+            bundleId: com.apple.Home
+            trackId: 1110145103
+            trackName: Home
+            currentVersionReleaseDate: '2023-10-30T17:34:54Z'
+            primaryGenreName: Lifestyle
+            primaryGenreId: 6012
+            releaseDate: '2016-06-13T18:55:15Z'
+            genreIds:
+              - '6012'
+            minimumOsVersion: '10.0'
+            version: '2.0'
+            wrapperType: software
+            price: 0
+            genres:
+              - Lifestyle
+            artistId: 284417353
+            artistName: Apple
+            userRatingCount: 4192
+    JournalExample:
+      value:
+        resultCount: 1
+        results:
+          - screenshotUrls:
+              - https://is1-ssl.mzstatic.com/image/thumb/PurpleSource126/v4/d2/3f/99/d23f990e-9acc-ca61-e8d9-735e8ae1b920/66cc9c3b-1859-46f7-b144-b9ecf9a0cec8_iPhoneSE_1_Timeline.png/392x696bb.png
+              - https://is1-ssl.mzstatic.com/image/thumb/PurpleSource126/v4/3b/7a/e6/3b7ae6c9-9aeb-c989-1dd2-698e90b9658c/53e4f78f-c227-4d6e-8ad5-60ab21f3621d_iPhoneSE_2_Journal_Suggestions.png/392x696bb.png
+              - https://is1-ssl.mzstatic.com/image/thumb/PurpleSource126/v4/29/8a/a9/298aa9ba-349c-a9b2-3694-5fecd45d94f0/3fc93fec-5af5-401a-8d9e-aa8cc1d21b45_iPhone8_3_Interstitial_1242.png/392x696bb.png
+              - https://is1-ssl.mzstatic.com/image/thumb/PurpleSource116/v4/40/98/5a/40985ac5-0d5e-7d21-b49e-9bb8b838a804/0bebe592-c043-431a-914a-19bc90dbb009_iPhoneSE_4_Entry.png/392x696bb.png
+            ipadScreenshotUrls: []
+            appletvScreenshotUrls: []
+            artworkUrl60: https://is1-ssl.mzstatic.com/image/thumb/Purple126/v4/a6/2c/2c/a62c2c1f-68cd-123c-c3dc-ea41375f8a30/AppIcon-0-0-1x_U007ephone-0-85-220.png/60x60bb.jpg
+            artworkUrl512: https://is1-ssl.mzstatic.com/image/thumb/Purple126/v4/a6/2c/2c/a62c2c1f-68cd-123c-c3dc-ea41375f8a30/AppIcon-0-0-1x_U007ephone-0-85-220.png/512x512bb.jpg
+            artworkUrl100: https://is1-ssl.mzstatic.com/image/thumb/Purple126/v4/a6/2c/2c/a62c2c1f-68cd-123c-c3dc-ea41375f8a30/AppIcon-0-0-1x_U007ephone-0-85-220.png/100x100bb.jpg
+            artistViewUrl: https://apps.apple.com/us/developer/apple/id284417353?mt=12&uo=4
+            isGameCenterEnabled: false
+            advisories: []
+            features: []
+            supportedDevices:
+              - iPhone5s-iPhone5s
+              - iPadAir-iPadAir
+              - iPadAirCellular-iPadAirCellular
+              - iPadMiniRetina-iPadMiniRetina
+              - iPadMiniRetinaCellular-iPadMiniRetinaCellular
+              - iPhone6-iPhone6
+              - iPhone6Plus-iPhone6Plus
+              - iPadAir2-iPadAir2
+              - iPadAir2Cellular-iPadAir2Cellular
+              - iPadMini3-iPadMini3
+              - iPadMini3Cellular-iPadMini3Cellular
+              - iPodTouchSixthGen-iPodTouchSixthGen
+              - iPhone6s-iPhone6s
+              - iPhone6sPlus-iPhone6sPlus
+              - iPadMini4-iPadMini4
+              - iPadMini4Cellular-iPadMini4Cellular
+              - iPadPro-iPadPro
+              - iPadProCellular-iPadProCellular
+              - iPadPro97-iPadPro97
+              - iPadPro97Cellular-iPadPro97Cellular
+              - iPhoneSE-iPhoneSE
+              - iPhone7-iPhone7
+              - iPhone7Plus-iPhone7Plus
+              - iPad611-iPad611
+              - iPad612-iPad612
+              - iPad71-iPad71
+              - iPad72-iPad72
+              - iPad73-iPad73
+              - iPad74-iPad74
+              - iPhone8-iPhone8
+              - iPhone8Plus-iPhone8Plus
+              - iPhoneX-iPhoneX
+              - iPad75-iPad75
+              - iPad76-iPad76
+              - iPhoneXS-iPhoneXS
+              - iPhoneXSMax-iPhoneXSMax
+              - iPhoneXR-iPhoneXR
+              - iPad812-iPad812
+              - iPad834-iPad834
+              - iPad856-iPad856
+              - iPad878-iPad878
+              - iPadMini5-iPadMini5
+              - iPadMini5Cellular-iPadMini5Cellular
+              - iPadAir3-iPadAir3
+              - iPadAir3Cellular-iPadAir3Cellular
+              - iPodTouchSeventhGen-iPodTouchSeventhGen
+              - iPhone11-iPhone11
+              - iPhone11Pro-iPhone11Pro
+              - iPadSeventhGen-iPadSeventhGen
+              - iPadSeventhGenCellular-iPadSeventhGenCellular
+              - iPhone11ProMax-iPhone11ProMax
+              - iPhoneSESecondGen-iPhoneSESecondGen
+              - iPadProSecondGen-iPadProSecondGen
+              - iPadProSecondGenCellular-iPadProSecondGenCellular
+              - iPadProFourthGen-iPadProFourthGen
+              - iPadProFourthGenCellular-iPadProFourthGenCellular
+              - iPhone12Mini-iPhone12Mini
+              - iPhone12-iPhone12
+              - iPhone12Pro-iPhone12Pro
+              - iPhone12ProMax-iPhone12ProMax
+              - iPadAir4-iPadAir4
+              - iPadAir4Cellular-iPadAir4Cellular
+              - iPadEighthGen-iPadEighthGen
+              - iPadEighthGenCellular-iPadEighthGenCellular
+              - iPadProThirdGen-iPadProThirdGen
+              - iPadProThirdGenCellular-iPadProThirdGenCellular
+              - iPadProFifthGen-iPadProFifthGen
+              - iPadProFifthGenCellular-iPadProFifthGenCellular
+              - iPhone13Pro-iPhone13Pro
+              - iPhone13ProMax-iPhone13ProMax
+              - iPhone13Mini-iPhone13Mini
+              - iPhone13-iPhone13
+              - iPadMiniSixthGen-iPadMiniSixthGen
+              - iPadMiniSixthGenCellular-iPadMiniSixthGenCellular
+              - iPadNinthGen-iPadNinthGen
+              - iPadNinthGenCellular-iPadNinthGenCellular
+              - iPhoneSEThirdGen-iPhoneSEThirdGen
+              - iPadAirFifthGen-iPadAirFifthGen
+              - iPadAirFifthGenCellular-iPadAirFifthGenCellular
+              - iPhone14-iPhone14
+              - iPhone14Plus-iPhone14Plus
+              - iPhone14Pro-iPhone14Pro
+              - iPhone14ProMax-iPhone14ProMax
+              - iPadTenthGen-iPadTenthGen
+              - iPadTenthGenCellular-iPadTenthGenCellular
+              - iPadPro11FourthGen-iPadPro11FourthGen
+              - iPadPro11FourthGenCellular-iPadPro11FourthGenCellular
+              - iPadProSixthGen-iPadProSixthGen
+              - iPadProSixthGenCellular-iPadProSixthGenCellular
+              - iPhone15-iPhone15
+              - iPhone15Plus-iPhone15Plus
+              - iPhone15Pro-iPhone15Pro
+              - iPhone15ProMax-iPhone15ProMax
+            kind: software
+            averageUserRatingForCurrentVersion: 3.3558
+            averageUserRating: 3.3558
+            trackCensoredName: Journal
+            languageCodesISO2A:
+              - EN
+            fileSizeBytes: '669696'
+            sellerUrl: 'http://www.apple.com/apps'
+            formattedPrice: Free
+            contentAdvisoryRating: 4+
+            userRatingCountForCurrentVersion: 3027
+            trackViewUrl: https://apps.apple.com/us/app/journal/id6447391597?uo=4
+            trackContentRating: 4+
+            releaseNotes: Bug Fixes and Feature Enhancements
+            artistId: 284417353
+            artistName: Apple
+            genres:
+              - Health & Fitness
+              - Lifestyle
+            price: 0
+            releaseDate: '2023-10-26T07:00:00Z'
+            description: >-
+              Take a moment to reflect on your day. Capture and write about the details
+              of everyday moments and special events using photos, videos, audio
+              recordings, places, and more. Journaling suggestions make it easy to
+              remember your daily experiences, so you never have to start with a blank
+              page.
+              Get started writing with journaling suggestions
+              • View and add suggested moments that intelligently group outings, photos,
+              workouts, media and more. Use the writing prompt to guide your insights.
+              • Get inspired with reflection prompts to focus on gratitude, kindness,
+              purpose, and more.
+
+              • Journaling suggestions are created using on-device intelligence based on
+              how you use your iPhone. Choose what information you want to enable for
+              suggestions. 
+              Preserve powerful memories in rich detail
+
+              • Illustrate your entries with the photos, videos, and places that tell
+              your story.
+
+              • Record your voice or your surroundings to add even more context.
+              • Start a new entry and add content from other apps like News, Music, or
+              Safari.
+              Look back on past moments 
+              • Browse and filter your journal to look back and reflect on key moments
+              in your life.
+              • View each entry and its attachments in a beautiful fullscreen view.
+              Keep your journal private and secure 
+              • Protect your journal with your device passcode, Touch ID, or Face ID, so
+              no one but you can access it.
+              • Store your entries safely in iCloud so they’re automatically backed up.
+              • Your suggestions are private and only what you select will be shared
+              with the app.
+              Build a good habit
+              • Set a schedule and receive notifications to keep a consistent journaling
+              practice.
+              • Get a notification when new journaling suggestions are ready.
+            currency: USD
+            primaryGenreName: Health & Fitness
+            primaryGenreId: 6013
+            currentVersionReleaseDate: '2023-12-13T17:57:31Z'
+            genreIds:
+              - '6013'
+              - '6012'
+            sellerName: Apple Inc.
+            isVppDeviceBasedLicensingEnabled: true
+            trackId: 6447391597
+            trackName: Journal
+            bundleId: com.apple.journal
+            minimumOsVersion: '17.2'
+            version: '1.1'
+            wrapperType: software
+            userRatingCount: 3027
+    KeynoteExample:
+      value:
+        resultCount: 1
+        results:
+          - screenshotUrls:
+              - https://is1-ssl.mzstatic.com/image/thumb/PurpleSource122/v4/13/dd/63/13dd63cc-d748-958d-3df5-6849c2db635a/16ed0767-3fa2-4102-8ed3-9852a6845214_1.png/406x228bb.png
+              - https://is1-ssl.mzstatic.com/image/thumb/PurpleSource112/v4/7a/45/49/7a45499e-ab28-0072-4012-202ea3e38cfb/0d7a18b7-2c39-43e2-8f1c-52ca30587bd9_2.png/406x228bb.png
+              - https://is1-ssl.mzstatic.com/image/thumb/PurpleSource122/v4/3e/7c/5b/3e7c5b2c-cb74-961a-5780-d22e314afb7b/bae05244-2a3e-4be8-82c0-f1116d98b2b3_3.png/406x228bb.png
+              - https://is1-ssl.mzstatic.com/image/thumb/PurpleSource122/v4/d8/b4/8a/d8b48ae5-3faa-f975-dc3a-ef6e9528f8db/39a7841c-d1e9-495e-a214-8792ab7061d4_4.png/406x228bb.png
+              - https://is1-ssl.mzstatic.com/image/thumb/PurpleSource112/v4/73/99/e6/7399e600-8a80-b638-579a-d7ce969ecf69/6022ad7a-844e-4724-befc-366846fda3da_5.png/406x228bb.png
+              - https://is1-ssl.mzstatic.com/image/thumb/PurpleSource112/v4/55/69/14/5569146b-2770-9dfd-1177-9b548094c1f7/ab10da5d-de8f-4de0-84ed-b4caa9aabd46_6.png/406x228bb.png
+              - https://is1-ssl.mzstatic.com/image/thumb/PurpleSource112/v4/8f/d5/cc/8fd5cc01-591f-3682-392b-a5d53633945e/57e68da1-cb98-49eb-9ab5-ae31da5b98ff_7.png/406x228bb.png
+              - https://is1-ssl.mzstatic.com/image/thumb/PurpleSource112/v4/0e/8b/8d/0e8b8d40-3f7d-9c77-e91d-a6a70dd8b228/7c0f50ac-2243-4880-bc5a-bc5568d5794c_8.png/406x228bb.png
+              - https://is1-ssl.mzstatic.com/image/thumb/PurpleSource112/v4/89/9e/c1/899ec12b-72a3-5ad0-cfe6-a09f2ed6c46b/63c6c1cf-7489-4072-bc5d-184802034310_9.png/406x228bb.png
+            ipadScreenshotUrls: []
+            appletvScreenshotUrls: []
+            artworkUrl60: https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/ba/5c/f7/ba5cf72b-6f31-3c53-6dd1-f1596f7534b3/AppIcon-0-1x_U007emarketing-0-0-0-7-0-0-sRGB-0-0-0-85-220-0.png/60x60bb.jpg
+            artworkUrl512: https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/ba/5c/f7/ba5cf72b-6f31-3c53-6dd1-f1596f7534b3/AppIcon-0-1x_U007emarketing-0-0-0-7-0-0-sRGB-0-0-0-85-220-0.png/512x512bb.jpg
+            artworkUrl100: https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/ba/5c/f7/ba5cf72b-6f31-3c53-6dd1-f1596f7534b3/AppIcon-0-1x_U007emarketing-0-0-0-7-0-0-sRGB-0-0-0-85-220-0.png/100x100bb.jpg
+            artistViewUrl: https://apps.apple.com/us/developer/apple/id284417353?mt=12&uo=4
+            isGameCenterEnabled: false
+            features:
+              - iosUniversal
+            advisories: []
+            supportedDevices:
+              - iPhone5s-iPhone5s
+              - iPadAir-iPadAir
+              - iPadAirCellular-iPadAirCellular
+              - iPadMiniRetina-iPadMiniRetina
+              - iPadMiniRetinaCellular-iPadMiniRetinaCellular
+              - iPhone6-iPhone6
+              - iPhone6Plus-iPhone6Plus
+              - iPadAir2-iPadAir2
+              - iPadAir2Cellular-iPadAir2Cellular
+              - iPadMini3-iPadMini3
+              - iPadMini3Cellular-iPadMini3Cellular
+              - iPodTouchSixthGen-iPodTouchSixthGen
+              - iPhone6s-iPhone6s
+              - iPhone6sPlus-iPhone6sPlus
+              - iPadMini4-iPadMini4
+              - iPadMini4Cellular-iPadMini4Cellular
+              - iPadPro-iPadPro
+              - iPadProCellular-iPadProCellular
+              - iPadPro97-iPadPro97
+              - iPadPro97Cellular-iPadPro97Cellular
+              - iPhoneSE-iPhoneSE
+              - iPhone7-iPhone7
+              - iPhone7Plus-iPhone7Plus
+              - iPad611-iPad611
+              - iPad612-iPad612
+              - iPad71-iPad71
+              - iPad72-iPad72
+              - iPad73-iPad73
+              - iPad74-iPad74
+              - iPhone8-iPhone8
+              - iPhone8Plus-iPhone8Plus
+              - iPhoneX-iPhoneX
+              - iPad75-iPad75
+              - iPad76-iPad76
+              - iPhoneXS-iPhoneXS
+              - iPhoneXSMax-iPhoneXSMax
+              - iPhoneXR-iPhoneXR
+              - iPad812-iPad812
+              - iPad834-iPad834
+              - iPad856-iPad856
+              - iPad878-iPad878
+              - Watch4-Watch4
+              - iPadMini5-iPadMini5
+              - iPadMini5Cellular-iPadMini5Cellular
+              - iPadAir3-iPadAir3
+              - iPadAir3Cellular-iPadAir3Cellular
+              - iPodTouchSeventhGen-iPodTouchSeventhGen
+              - iPhone11-iPhone11
+              - iPhone11Pro-iPhone11Pro
+              - iPadSeventhGen-iPadSeventhGen
+              - iPadSeventhGenCellular-iPadSeventhGenCellular
+              - iPhone11ProMax-iPhone11ProMax
+              - iPhoneSESecondGen-iPhoneSESecondGen
+              - iPadProSecondGen-iPadProSecondGen
+              - iPadProSecondGenCellular-iPadProSecondGenCellular
+              - iPadProFourthGen-iPadProFourthGen
+              - iPadProFourthGenCellular-iPadProFourthGenCellular
+              - iPhone12Mini-iPhone12Mini
+              - iPhone12-iPhone12
+              - iPhone12Pro-iPhone12Pro
+              - iPhone12ProMax-iPhone12ProMax
+              - iPadAir4-iPadAir4
+              - iPadAir4Cellular-iPadAir4Cellular
+              - iPadEighthGen-iPadEighthGen
+              - iPadEighthGenCellular-iPadEighthGenCellular
+              - iPadProThirdGen-iPadProThirdGen
+              - iPadProThirdGenCellular-iPadProThirdGenCellular
+              - iPadProFifthGen-iPadProFifthGen
+              - iPadProFifthGenCellular-iPadProFifthGenCellular
+              - iPhone13Pro-iPhone13Pro
+              - iPhone13ProMax-iPhone13ProMax
+              - iPhone13Mini-iPhone13Mini
+              - iPhone13-iPhone13
+              - iPadMiniSixthGen-iPadMiniSixthGen
+              - iPadMiniSixthGenCellular-iPadMiniSixthGenCellular
+              - iPadNinthGen-iPadNinthGen
+              - iPadNinthGenCellular-iPadNinthGenCellular
+              - iPhoneSEThirdGen-iPhoneSEThirdGen
+              - iPadAirFifthGen-iPadAirFifthGen
+              - iPadAirFifthGenCellular-iPadAirFifthGenCellular
+              - iPhone14-iPhone14
+              - iPhone14Plus-iPhone14Plus
+              - iPhone14Pro-iPhone14Pro
+              - iPhone14ProMax-iPhone14ProMax
+              - iPadTenthGen-iPadTenthGen
+              - iPadTenthGenCellular-iPadTenthGenCellular
+              - iPadPro11FourthGen-iPadPro11FourthGen
+              - iPadPro11FourthGenCellular-iPadPro11FourthGenCellular
+              - iPadProSixthGen-iPadProSixthGen
+              - iPadProSixthGenCellular-iPadProSixthGenCellular
+              - iPhone15-iPhone15
+              - iPhone15Plus-iPhone15Plus
+              - iPhone15Pro-iPhone15Pro
+              - iPhone15ProMax-iPhone15ProMax
+            kind: software
+            averageUserRatingForCurrentVersion: 4.10587
+            averageUserRating: 4.10587
+            trackCensoredName: Keynote
+            languageCodesISO2A:
+              - AR
+              - CA
+              - HR
+              - CS
+              - DA
+              - NL
+              - EN
+              - FI
+              - FR
+              - DE
+              - EL
+              - HE
+              - HI
+              - HU
+              - ID
+              - IT
+              - JA
+              - KO
+              - MS
+              - NB
+              - PL
+              - PT
+              - RO
+              - RU
+              - ZH
+              - SK
+              - ES
+              - SV
+              - TH
+              - ZH
+              - TR
+              - UK
+              - VI
+            fileSizeBytes: '522563584'
+            sellerUrl: 'https://www.apple.com/apps/#keynote'
+            formattedPrice: Free
+            contentAdvisoryRating: 4+
+            userRatingCountForCurrentVersion: 35328
+            trackViewUrl: 'https://apps.apple.com/us/app/keynote/id361285480?uo=4'
+            trackContentRating: 4+
+            currency: USD
+            minimumOsVersion: '16.0'
+            artistId: 284417353
+            artistName: Apple
+            genres:
+              - Productivity
+              - Business
+            price: 0
+            description: >-
+              Keynote is the most powerful presentation app ever designed for a mobile
+              device.
+              Start with an Apple-designed theme and add text, images, charts, tables,
+              and shapes with just a few taps. Draw and write with Apple Pencil on iPad,
+              or use your finger. Bring it all to life with cinematic animations and
+              transitions that look as though they were created by your own special
+              effects team. Add live video to your slideshow and appear right on your
+              slides in remote presentations, how-to videos, and lectures. Confidently
+              present to your audience from anywhere, in person or virtually, and take
+              turns controlling a presentation in multi-presenter slideshows.
+              Collaborate with others at the same time
+              • With real-time collaboration, your whole team can work together on a
+              presentation at the same time on Mac, iPad, iPhone, and even on a PC
+              
+              • Share your document publicly or with specific people, see who’s
+              currently in the presentation with you, and view other people’s cursors to
+              follow their edits
+              • See a list of recent changes in collaborative presentations, including
+              when people join, comment, and make edits
+              • Available for presentations stored in iCloud or in Box
+              Get started quickly
+              • Choose from over 40 Apple-designed themes to give your presentations a
+              beautiful start or create a quick draft by starting with a text outline
+              • Use the slide navigator to quickly skim through your presentation, add
+              new slides, and reorder slides
+              • Get quick access to shapes, media, tables, charts, and sharing options
+              • Import and edit Microsoft PowerPoint presentations
+              • Quickly open password-protected presentations using Touch ID or Face ID
+              on supported devices
+              Create stunning presentations
+              • Easily change slide layouts and backgrounds
+              • Use the built-in camera to add live video right on your slides
+              • Engage your audience with interactive charts and chart animations
+              • Enhance your presentations with a library of over 700 editable shapes
+              • Quickly add your photos and videos from the Photos app using the Media
+              Browser
+              • Add an interactive image gallery to view a collection of photos
+              • Easily remove image backgrounds
+              • Use gorgeous preset styles to make your text, tables, shapes, and images
+              look beautiful
+              • Edit down to the pixel with rulers and alignment guides
+              Cinema-quality animations
+              • Beautiful cinematic slide transitions and impressive text and object
+              animations
+              • Magic Move effect effortlessly animates and morphs graphics
+              • Emphasis builds let you add impact with one click
+              • See live on-canvas previews as you animate your slides
+              Present to your audience
+              • Customizable presenter display
+              • Rehearse a presentation with current slide, presenter notes, and timer
+              all in one view
+              • Present on an external display or projector, or stream wirelessly using
+              AirPlay and Apple TV
+              • Use multi-presenter slideshows to let participants take turns
+              controlling a shared presentation from their own device
+              • Easily access the slide navigator, keyboard shortcuts, live video
+              sources, or multi-presenter slideshow controls while presenting
+              • Highlight with Apple Pencil or with your finger while presenting on iPad
+              • Control your slideshow from iPhone, iPad, or Apple Watch
+              • Create self-running, interactive shows for kiosks and displays
+              iCloud
+              • Turn on iCloud so you can access and edit your presentations from your
+              Mac, iPad, iPhone, and from a Mac or PC browser at iCloud.com
+              • Keynote automatically saves your presentations as you make changes
+              Share a copy of your work
+              • Export presentations to Microsoft PowerPoint, PDF, HTML, movies, and
+              image files
+              • Use AirDrop to send your presentation to anyone nearby
+              • Quickly and easily share a link to your work via Mail or Messages
+              Some features may require Internet access; additional fees and terms may
+              apply.
+            isVppDeviceBasedLicensingEnabled: true
+            releaseDate: '2010-04-01T20:40:46Z'
+            bundleId: com.apple.Keynote
+            currentVersionReleaseDate: '2024-04-02T15:31:46Z'
+            primaryGenreName: Productivity
+            primaryGenreId: 6007
+            trackId: 361285480
+            trackName: Keynote
+            releaseNotes: >-
+              • Add a new look to your slides with the Dynamic Color, Minimalist Light,
+              and Minimalist Dark themes
+              • Streamlined in-app notifications inform you when a person joins a
+              collaborative presentation for the first time
+              • Preserve file format and full quality when adding HEIC photos taken on
+              iPhone or iPad
+              • On iPad, press and hold the Command key on a connected keyboard to
+              select noncontiguous words, sentences, or paragraphs using a trackpad or
+              mouse
+              • Improved compatibility for slide transitions when importing and
+              exporting Microsoft PowerPoint files
+              • Additional stability and performance improvements
+            sellerName: Apple Inc.
+            genreIds:
+              - '6007'
+              - '6000'
+            version: '14.0'
+            wrapperType: software
+            userRatingCount: 35328

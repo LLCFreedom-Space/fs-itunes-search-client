@@ -1,7 +1,7 @@
 import XCTest
-@testable import FSITunesSearchClient
+@testable import ITunesSearchClient
 
-final class FSITunesSearchClientTests: XCTestCase {
+final class ITunesSearchClientTests: XCTestCase {
     func testExample() throws {
         // XCTest Documentation
         // https://developer.apple.com/documentation/xctest
