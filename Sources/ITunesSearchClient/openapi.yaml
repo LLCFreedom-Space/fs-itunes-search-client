@@ -65,7 +65,7 @@ components:
       example: com.apple.store.Jolly
     CountryQuery:
       name: country
-      description: The country in alpha 2 format.
+      description: Filter results by country (e.g., US, RU, DE).
       required: false
       in: query
       schema:
@@ -79,10 +79,11 @@ components:
       properties:
         resultCount:
           type: integer
-          description: count
+          description: This is the total number of results found for your search query.
           example: 1
         results:
           type: array
+          description: This is an array of objects, each of which represents a single app that was found in the search results.
           items:
             $ref: '#/components/schemas/Result'
     Result:
@@ -92,169 +93,401 @@ components:
         screenshotUrls:
           type: array
           nullable: true
+          description: An array of URLs for screenshots of the app.
           items:
             type: string
             nullable: true
+          example:
+            - https://is1-ssl.mzstatic.com/image/thumb/PurpleSource112/v4/5d/f8/38/5df83862-1ae1-a2b6-6871-57c998214b73/c89d9803-e7c9-4834-8181-f1459c607374_1.png/392x696bb.png
+            - https://is1-ssl.mzstatic.com/image/thumb/PurpleSource112/v4/2c/70/5c/2c705c84-5258-88b7-faae-27a8a5d41133/ac267ac2-bbed-44b1-9923-fe724bf3c001_2.png/392x696bb.png
+            - https://is1-ssl.mzstatic.com/image/thumb/PurpleSource122/v4/75/83/a0/7583a05e-caf7-29f1-ceaf-5e177ae20928/b48b55da-c655-4bb2-aeb3-c2052baada9f_3.png/392x696bb.png
+            - https://is1-ssl.mzstatic.com/image/thumb/PurpleSource122/v4/11/31/a5/1131a566-b44a-f7e3-5f71-77b1f32429bf/87f4de95-52f0-4863-9bbf-fb3974ca8015_4.png/392x696bb.png
+            - https://is1-ssl.mzstatic.com/image/thumb/PurpleSource122/v4/28/e4/f9/28e4f90e-4a82-f68f-1f94-c7b11c54dd37/400d5b5b-a40a-4246-b890-e63198796df6_5.png/392x696bb.png
+            - https://is1-ssl.mzstatic.com/image/thumb/PurpleSource112/v4/16/a6/df/16a6df6c-df54-7392-1e61-4279551b63f0/b4892677-018b-4569-afe7-54a28387699f_6.png/392x696bb.png
+            - https://is1-ssl.mzstatic.com/image/thumb/PurpleSource112/v4/fe/44/1a/fe441a70-778d-27a6-22a4-d0622a19c61c/9ba1bfc4-c70a-4200-8dfb-483aa6d49a6c_7.png/392x696bb.png
+            - https://is1-ssl.mzstatic.com/image/thumb/PurpleSource122/v4/fa/2b/34/fa2b349a-f3b4-bfae-cf90-17967b6e5fed/f4445b78-4cc4-4230-8a3c-6b9268e17a0d_8.png/392x696bb.png
+            - https://is1-ssl.mzstatic.com/image/thumb/PurpleSource112/v4/1a/5f/1f/1a5f1fd7-d42d-aa47-d157-2ff5f49bde2c/e5cecc21-d73a-441e-87c7-d8d0b3cd0bf1_9.png/392x696bb.png
         ipadScreenshotUrls:
           type: array
           nullable: true
+          description: An array of URLs for screenshots of the app on iPad.
           items:
             type: string
             nullable: true
+          example:
+            -
         appletvScreenshotUrls:
           type: array
           nullable: true
+          description: An array of URLs for screenshots of the app on Apple TV.
           items:
             type: string
             nullable: true
+          example:
+            -
         artworkUrl60:
           type: string
           nullable: true
           description: A URL for the artwork associated with the returned media type, sized to 60×60 pixels.
+          example: https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/1c/08/96/1c0896f8-ccd9-0e1e-3045-b7c15f041a05/AppIcon-0-0-1x_U007emarketing-0-0-0-7-0-0-sRGB-0-0-0-85-220-0.png/60x60bb.jpg
         artworkUrl512:
           type: string
           nullable: true
           description: A URL for the artwork associated with the returned media type, sized to 512×512 pixels.
+          example: https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/1c/08/96/1c0896f8-ccd9-0e1e-3045-b7c15f041a05/AppIcon-0-0-1x_U007emarketing-0-0-0-7-0-0-sRGB-0-0-0-85-220-0.png/512x512bb.jpg
         artworkUrl100:
           type: string
           nullable: true
           description: A URL for the artwork associated with the returned media type, sized to 100×100 pixels.
+          example: https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/1c/08/96/1c0896f8-ccd9-0e1e-3045-b7c15f041a05/AppIcon-0-0-1x_U007emarketing-0-0-0-7-0-0-sRGB-0-0-0-85-220-0.png/100x100bb.jpg
         artistViewUrl:
           type: string
           nullable: true
+          description: url
+          example: https://apps.apple.com/us/developer/apple/id284417353?mt=12&uo=4
         supportedDevices:
           type: array
           nullable: true
           items:
             type: string
             nullable: true
+          description: An array of devices that the app is compatible with.
+          example:
+            - iPhone5s-iPhone5s
+            - iPadAir-iPadAir
+            - iPadAirCellular-iPadAirCellular
+            - iPadMiniRetina-iPadMiniRetina
+            - iPadMiniRetinaCellular-iPadMiniRetinaCellular
+            - iPhone6-iPhone6
+            - iPhone6Plus-iPhone6Plus
+            - iPadAir2-iPadAir2
+            - iPadAir2Cellular-iPadAir2Cellular
+            - iPadMini3-iPadMini3
+            - iPadMini3Cellular-iPadMini3Cellular
+            - iPodTouchSixthGen-iPodTouchSixthGen
+            - iPhone6s-iPhone6s
+            - iPhone6sPlus-iPhone6sPlus
+            - iPadMini4-iPadMini4
+            - iPadMini4Cellular-iPadMini4Cellular
+            - iPadPro-iPadPro
+            - iPadProCellular-iPadProCellular
+            - iPadPro97-iPadPro97
+            - iPadPro97Cellular-iPadPro97Cellular
+            - iPhoneSE-iPhoneSE
+            - iPhone7-iPhone7
+            - iPhone7Plus-iPhone7Plus
+            - iPad611-iPad611
+            - iPad612-iPad612
+            - iPad71-iPad71
+            - iPad72-iPad72
+            - iPad73-iPad73
+            - iPad74-iPad74
+            - iPhone8-iPhone8
+            - iPhone8Plus-iPhone8Plus
+            - iPhoneX-iPhoneX
+            - iPad75-iPad75
+            - iPad76-iPad76
+            - iPhoneXS-iPhoneXS
+            - iPhoneXSMax-iPhoneXSMax
+            - iPhoneXR-iPhoneXR
+            - iPad812-iPad812
+            - iPad834-iPad834
+            - iPad856-iPad856
+            - iPad878-iPad878
+            - iPadMini5-iPadMini5
+            - iPadMini5Cellular-iPadMini5Cellular
+            - iPadAir3-iPadAir3
+            - iPadAir3Cellular-iPadAir3Cellular
+            - iPodTouchSeventhGen-iPodTouchSeventhGen
+            - iPhone11-iPhone11
+            - iPhone11Pro-iPhone11Pro
+            - iPadSeventhGen-iPadSeventhGen
+            - iPadSeventhGenCellular-iPadSeventhGenCellular
+            - iPhone11ProMax-iPhone11ProMax
+            - iPhoneSESecondGen-iPhoneSESecondGen
+            - iPadProSecondGen-iPadProSecondGen
+            - iPadProSecondGenCellular-iPadProSecondGenCellular
+            - iPadProFourthGen-iPadProFourthGen
+            - iPadProFourthGenCellular-iPadProFourthGenCellular
+            - iPhone12Mini-iPhone12Mini
+            - iPhone12-iPhone12
+            - iPhone12Pro-iPhone12Pro
+            - iPhone12ProMax-iPhone12ProMax
+            - iPadAir4-iPadAir4
+            - iPadAir4Cellular-iPadAir4Cellular
+            - iPadEighthGen-iPadEighthGen
+            - iPadEighthGenCellular-iPadEighthGenCellular
+            - iPadProThirdGen-iPadProThirdGen
+            - iPadProThirdGenCellular-iPadProThirdGenCellular
+            - iPadProFifthGen-iPadProFifthGen
+            - iPadProFifthGenCellular-iPadProFifthGenCellular
+            - iPhone13Pro-iPhone13Pro
+            - iPhone13ProMax-iPhone13ProMax
+            - iPhone13Mini-iPhone13Mini
+            - iPhone13-iPhone13
+            - iPadMiniSixthGen-iPadMiniSixthGen
+            - iPadMiniSixthGenCellular-iPadMiniSixthGenCellular
+            - iPadNinthGen-iPadNinthGen
+            - iPadNinthGenCellular-iPadNinthGenCellular
+            - iPhoneSEThirdGen-iPhoneSEThirdGen
+            - iPadAirFifthGen-iPadAirFifthGen
+            - iPadAirFifthGenCellular-iPadAirFifthGenCellular
+            - iPhone14-iPhone14
+            - iPhone14Plus-iPhone14Plus
+            - iPhone14Pro-iPhone14Pro
+            - iPhone14ProMax-iPhone14ProMax
+            - iPadTenthGen-iPadTenthGen
+            - iPadTenthGenCellular-iPadTenthGenCellular
+            - iPadPro11FourthGen-iPadPro11FourthGen
+            - iPadPro11FourthGenCellular-iPadPro11FourthGenCellular
+            - iPadProSixthGen-iPadProSixthGen
+            - iPadProSixthGenCellular-iPadProSixthGenCellular
+            - iPhone15-iPhone15
+            - iPhone15Plus-iPhone15Plus
+            - iPhone15Pro-iPhone15Pro
+            - iPhone15ProMax-iPhone15ProMax
         advisories:
           type: array
           nullable: true
           items:
             type: string
             nullable: true
+          description: An array of content advisories associated with the app.
+          example:
+            -
         isGameCenterEnabled:
           type: boolean
           nullable: true
+          description: A boolean value that indicates whether the app supports Game Center.
+          example: true
         features:
           type: array
           nullable: true
+          description: An array of features that the app supports.
           items:
             type: string
             nullable: true
+          example:
+            - iosUniversal
         kind:
           type: string
           nullable: true
           description: The kind of content returned by the search request.
+          example: software
         averageUserRatingForCurrentVersion:
           type: number
           nullable: true
+          description: The average user rating for the current version of the app.
+          example: 4.59673
         averageUserRating:
           type: number
           nullable: true
+          description: The average user rating for the app.
+          example: 4.59673
         trackCensoredName:
           type: string
           nullable: true
+          description: The censored name of the app.
+          example: Pages
         languageCodesISO2A:
           type: array
           nullable: true
+          description: An array of two-letter ISO codes for the languages that the app supports.
           items:
             type: string
             nullable: true
+          example:
+            - AR
+            - CA
+            - HR
+            - CS
+            - DA
+            - NL
+            - EN
+            - FI
+            - FR
+            - DE
+            - EL
+            - HE
+            - HI
+            - HU
+            - ID
+            - IT
+            - JA
+            - KO
+            - MS
+            - NB
+            - PL
+            - PT
+            - RO
+            - RU
+            - ZH
+            - SK
+            - ES
+            - SV
+            - TH
+            - ZH
+            - TR
+            - UK
+            - VI
         fileSizeBytes:
           type: string
           nullable: true
+          description: The size of the app in bytes.
+          example: '459957248'
         sellerUrl:
           type: string
           nullable: true
+          description: The URL for the seller of the app on the App Store.
+          example: https://www.apple.com/apps/#pages
         formattedPrice:
           type: string
           nullable: true
+          description: The price of the app in the user's currency.
+          example: Free
         contentAdvisoryRating:
           type: string
           nullable: true
+          description: The content advisory rating for the app.
+          example: '4+'
         userRatingCountForCurrentVersion:
           type: integer
           nullable: true
+          description: The number of user ratings for the current version of the app.
+          example: 178815
         trackViewUrl:
           type: string
           nullable: true
+          description: A URL for the app on the App Store.
+          example: https://apps.apple.com/us/app/pages/id361309726?uo=4
         trackContentRating:
           type: string
           nullable: true
+          description: The content rating for the app.
+          example: '4+'
         minimumOsVersion:
           type: string
           nullable: true
+          description: The minimum version of the operating system that is required to run the app.
+          example: '16.0'
         currentVersionReleaseDate:
           type: string
           nullable: true
+          description: The release date of the current version of the app.
+          example: '2024-04-02T15:32:07Z'
         releaseNotes:
           type: string
           nullable: true
+          description: The release notes for the current version of the app.
+          example: >-
+            • On iPad, press and hold the Command key on a connected keyboard to
+            select noncontiguous words, sentences, or paragraphs using a trackpad or
+            mouse
+            • Streamlined in-app notifications inform you when a person joins a
+            collaborative document for the first time
+            • Preserve file format and full quality when adding HEIC photos taken on
+            iPhone or iPad
+            • Additional stability and performance improvements
         artistId:
           type: integer
           nullable: true
+          description: The Apple ID of the artist or developer of the app.
+          example: 284417353
         artistName:
           type: string
           nullable: true
           description: The name of the artist returned by the search request.
+          example: Apple
         genres:
           type: array
           nullable: true
           items:
             type: string
             nullable: true
+          description: An array of genres that the app belongs to.
+          example:
+            - Productivity
+            - Business
         price:
           type: number
           nullable: true
+          description: The price of the app in the user's currency (in numeric format).
+          example: 0
         description:
           type: string
           nullable: true
+          description: A description of the app.
+          example: "Pages is the most beautiful word processor you’ve ever seen on a mobile device. Start with an Apple-designed template to instantly create gorgeous reports, digital books, resumes, posters, and more. Or use a blank document and create your own design. Easily add images, movies, audio, tables, charts, and shapes. You can even draw and annotate using Apple Pencil on supported devices, or use your finger. Pages has been designed exclusively for iPad and iPhone.\n\nDraw and annotate using Apple Pencil or your finger\n• Easily add drawings with pen, pencil, crayon, and fill tools, then animate them and watch them come to life\n• Use Smart Annotation to add comments and marks that stay anchored to their associated text\n•\_Convert your handwritten words to typed text with Scribble and Apple Pencil\n\nCollaborate with others at the same time\n• With real-time collaboration, your whole team can work together on a document at the same time on Mac, iPad, iPhone, and even on a PC\n• Share your document publicly or with specific people, see who’s currently in the document with you, and view other people’s cursors to follow their edits\n• See a list of recent changes in collaborative documents, including when people join, comment, and make edits\n• Available for documents stored in iCloud or in Box\n\nGet started quickly\n• Choose from over 90 Apple-designed templates to instantly create beautiful reports, digital books, resumes, cards, posters, and more\n• Use Screen View on iPhone to automatically display text, images, and other elements in a continuous flow optimized to fit your screen so documents are even easier to read and edit\n• Get quick access to shapes, media, tables, charts, and sharing options\n• Import and edit Microsoft Word and text files\n• Quickly open password-protected documents using Touch ID or Face ID on supported devices\n\nCreate beautiful documents\n• Format your document with gorgeous styles, fonts, and textures\n• Enhance your document with a library of over 700 editable shapes\n• Easily add images, video, and audio\n• Add an image gallery to view a collection of photos on the same page\n• Create interactive EPUB books that can be shared with others or published to Apple Books for download or purchase\n\nAdvanced tools\n• Use the table of contents view to easily navigate your document or book\n• Add comments and join threaded conversations\n• Turn on change tracking to mark up a document as you edit it\n• Add bookmarks to easily link from one part of your document to another\n• View pages side by side as you work\n• Turn on facing pages to format your document as two-page spreads\n• Create page templates to keep the design consistent across your page layout document\n• Add linked text boxes so text easily flows from one place to another\n• Create footnotes and endnotes and view character, word, and paragraph counts\n• Add elegant mathematical equations using LaTeX or MathML notation\n• Use presenter mode to easily read and auto scroll text while giving a speech\n\niCloud\n• Turn on iCloud so your documents are automatically available on your Mac, iPad, iPhone, and from a Mac or PC browser at iCloud.com\n• Pages automatically saves your documents as you make changes\n\nShare a copy of your work\n• Use AirDrop to send your document to anyone nearby\n• Quickly and easily share a link to your work via Mail or Messages\n• Export your document in EPUB, Microsoft Word, RTF, TXT, and PDF format\n• Print wirelessly with AirPrint, including page range selection, number of copies, and two-sided printing\n\nSome features may require Internet access; additional fees and terms may apply."
         genreIds:
           type: array
           nullable: true
           items:
             type: string
             nullable: true
+          description: An array of genre IDs that the app belongs to.
+          example:
+            - '6007'
+            - '6000'
         trackId:
           type: integer
           nullable: true
+          description: The ID of the app in the iTunes Store.
+          example: 361309726
         trackName:
           type: string
           nullable: true
           description: The name of the track, song, video, TV episode, and so on returned by the search request.
+          example: Pages
         isVppDeviceBasedLicensingEnabled:
           type: boolean
           nullable: true
+          description: A boolean value that indicates whether the app supports volume purchase program device-based licensing.
+          example: true
         bundleId:
           type: string
           nullable: true
+          description: The bundle ID of the app.
+          example: com.apple.Pages
         releaseDate:
           type: string
           nullable: true
+          description: The release date of the app.
+          example: '2010-04-01T20:36:57Z'
         currency:
           type: string
           nullable: true
+          description: The currency that the price of the app is in.
+          example: USD
         sellerName:
           type: string
           nullable: true
+          description: The name of the seller of the app.
+          example: Apple Inc.
         primaryGenreName:
           type: string
           nullable: true
+          description: The name of the primary genre that the app belongs to.
+          example: Productivity
         primaryGenreId:
           type: integer
           nullable: true
+          description: The ID of the primary genre that the app belongs to.
+          example: 6007
         version:
           type: string
           nullable: true
+          description: The version number of the app.
+          example: '14.0'
         wrapperType:
           type: string
           nullable: true
           description: The name of the object returned by the search request.
+          example: software
         userRatingCount:
           type: integer
           nullable: true
+          description: The number of user ratings for the app.
+          example: 178815
   # Reusable examples
   examples:
     HomeExample:
