@@ -44,14 +44,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AppResponse'
-
-              examples:
-                HomeExample:
-                  $ref: '#/components/examples/HomeExample'
-                JournalExample:
-                  $ref: '#/components/examples/JournalExample'
-                KeynoteExample:
-                  $ref: '#/components/examples/KeynoteExample'
+            text/javascript:
+              schema:
+                type: string
+                format: binary
 components:
   # Reusable path, query, header and cookie parameters
   parameters:
@@ -867,7 +863,7 @@ components:
 
               • Journaling suggestions are created using on-device intelligence based on
               how you use your iPhone. Choose what information you want to enable for
-              suggestions. 
+              suggestions.
               Preserve powerful memories in rich detail
 
               • Illustrate your entries with the photos, videos, and places that tell
@@ -876,11 +872,11 @@ components:
               • Record your voice or your surroundings to add even more context.
               • Start a new entry and add content from other apps like News, Music, or
               Safari.
-              Look back on past moments 
+              Look back on past moments
               • Browse and filter your journal to look back and reflect on key moments
               in your life.
               • View each entry and its attachments in a beautiful fullscreen view.
-              Keep your journal private and secure 
+              Keep your journal private and secure
               • Protect your journal with your device passcode, Touch ID, or Face ID, so
               no one but you can access it.
               • Store your entries safely in iCloud so they’re automatically backed up.
