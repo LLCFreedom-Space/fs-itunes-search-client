@@ -48,6 +48,9 @@ paths:
               schema:
                 type: string
                 format: binary
+        # Definition of all error statuses
+        default:
+          description: Unexpected error
 components:
   # Reusable path, query, header and cookie parameters
   parameters:

@@ -10,7 +10,7 @@ import XCTest
 
 final class ITunesSearchClientIntegrationTests: XCTestCase {
     func testFetchBundleIDs() async throws {
-        let client = ITunesSearchClient()
+        let client = try ITunesSearchClient()
         let bundleIDs = try await client.fetchBundleIdentifiers(bundleId: "com.apple.Pages")
         XCTAssertEqual(["com.apple.Pages"], bundleIDs)
     }

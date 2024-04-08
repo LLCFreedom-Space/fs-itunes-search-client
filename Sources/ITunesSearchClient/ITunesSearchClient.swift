@@ -2,14 +2,22 @@ import OpenAPIRuntime
 import Foundation
 import OpenAPIURLSession
 
-public struct ITunesSearchClient {
+public protocol ITunesSearchClientProtocol {
+    func fetchBundleIdentifiers(bundleId: String) async throws -> [String]
+}
+
+public struct ITunesSearchClient: ITunesSearchClientProtocol {
     private let client: Client
     
-    public init() {
-        self.client = try! Client(
-            serverURL: Servers.server1(),
-            transport: URLSessionTransport()
-        )
+    public init() throws {
+        do {
+            self.client = try Client(
+                serverURL: Servers.server1(),
+                transport: URLSessionTransport()
+            )
+        } catch {
+            throw ITunesSearchClientError.failedToDecode
+        }
     }
     
     public func fetchBundleIdentifiers(bundleId: String) async throws -> [String] {
@@ -19,17 +27,32 @@ public struct ITunesSearchClient {
         case .ok(let response):
             switch response.body {
             case .json(let json):
-                return json.results?.compactMap({ $0.bundleId }) ?? []
-            
+                guard let result = json.results?.compactMap({ $0.bundleId }) else {
+                    throw ITunesSearchClientError.emptyResult
+                }
+                return result
             case .text_javascript(let body):
-                print(body)
-                let jsonData = try await String(collecting: body, upTo: 12000).data(using: .utf8) ?? Data()
-                let res = try! JSONDecoder().decode(Components.Schemas.AppResponse.self, from: jsonData)
-                return res.results?.compactMap({ $0.bundleId }) ?? []
+                guard let jsonData = try await String(collecting: body, upTo: 12000).data(using: .utf8) else {
+                    throw ITunesSearchClientError.failedToDecode
+                }
+                do {
+                    let res = try JSONDecoder().decode(Components.Schemas.AppResponse.self, from: jsonData)
+                    guard let result = res.results?.compactMap({ $0.bundleId }) else {
+                        throw ITunesSearchClientError.emptyResult
+                    }
+                    return result
+                } catch {
+                    throw ITunesSearchClientError.failedToDecode
+                }
             }
-        default:
-            break
+        case .default(let statusCode, _):
+            throw ITunesSearchClientError.serverError(errorCode: statusCode)
         }
-        return []
     }
+}
+
+public enum ITunesSearchClientError: Error {
+    case serverError(errorCode: Int)
+    case failedToDecode
+    case emptyResult
 }
