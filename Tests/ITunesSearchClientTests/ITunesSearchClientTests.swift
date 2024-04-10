@@ -1,4 +1,5 @@
 import XCTest
+import OpenAPIRuntime
 @testable import ITunesSearchClient
 
 final class ITunesSearchClientTests: XCTestCase {
@@ -30,11 +31,32 @@ final class ITunesSearchClientTests: XCTestCase {
             XCTAssertEqual(error.localizedDescription, ITunesSearchClientError.notFound.localizedDescription)
         }
     }
+    
+    func testGetByBundleIdServerError() async throws {
+        let mockClient = MockClient()
+        let client = ITunesSearchClient(client: mockClient)
+        do {
+            _ = try await client.fetchAppInfo(by: "error")
+            XCTFail("Expected error not thrown")
+        } catch {
+            XCTAssertEqual(error.localizedDescription, ITunesSearchClientError.serverError(errorCode: 500).localizedDescription)
+        }
+    }
+    
+    func testGetByBundleIdTextJavascriptExceedsMaximumBytes() async throws {
+        let mockClient = MockClient()
+        let client = ITunesSearchClient(client: mockClient)
+        do {
+            _ = try await client.fetchAppInfo(by: "largeResponse")
+            XCTFail("Expected response data error not thrown")
+        } catch {
+            XCTAssertEqual(error.localizedDescription, ITunesSearchClientError.failedToDecode().localizedDescription)
+        }
+    }
 }
 
 // A mock client used in previews and tests to avoid making live network calls.
 struct MockClient: APIProtocol {
-    var error: Error?
     private var keynoteResult: Components.Schemas.Result {
         let result = Components.Schemas.Result(
             screenshotUrls: [
@@ -290,6 +312,11 @@ Some features may require Internet access; additional fees and terms may apply.
         switch input.query.bundleId {
         case "com.apple.Keynote":
             return .ok(.init(body: .json(Components.Schemas.AppResponse(resultCount: 1, results: [keynoteResult]))))
+        case "error":
+            return .default(statusCode: 500, .init())
+        case "largeResponse": // For testing maximum bytes exceeded
+            let largeBody = HTTPBody() // Creating a large response body
+            return .ok(.init(body: .text_javascript(largeBody)))
         default:
             return .ok(.init(body: .json(Components.Schemas.AppResponse(resultCount: 0, results: []))))
         }
