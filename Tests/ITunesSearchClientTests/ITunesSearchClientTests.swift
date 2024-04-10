@@ -43,11 +43,11 @@ final class ITunesSearchClientTests: XCTestCase {
         }
     }
     
-    func testGetByBundleIdTextJavascriptExceedsMaximumBytes() async throws {
+    func testGetByBundleIdTextJavascriptFailedToDecode() async throws {
         let mockClient = MockClient()
         let client = ITunesSearchClient(client: mockClient)
         do {
-            _ = try await client.fetchAppInfo(by: "largeResponse")
+            _ = try await client.fetchAppInfo(by: "failedToDecode")
             XCTFail("Expected response data error not thrown")
         } catch {
             XCTAssertEqual(error.localizedDescription, ITunesSearchClientError.failedToDecode().localizedDescription)
@@ -317,6 +317,10 @@ Some features may require Internet access; additional fees and terms may apply.
         case "largeResponse": // For testing maximum bytes exceeded
             let largeBody = HTTPBody() // Creating a large response body
             return .ok(.init(body: .text_javascript(largeBody)))
+        case "failedToDecode":
+            let data = try JSONEncoder().encode(keynoteResult)
+            let body = HTTPBody(data)
+            return .ok(.init(body: .text_javascript(body)))
         default:
             return .ok(.init(body: .json(Components.Schemas.AppResponse(resultCount: 0, results: []))))
         }
