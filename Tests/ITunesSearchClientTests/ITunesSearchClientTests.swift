@@ -5,7 +5,7 @@ final class ITunesSearchClientTests: XCTestCase {
     func testGetByBundleId() async throws {
         let mockClient = MockClient()
         let client = ITunesSearchClient(client: mockClient)
-        let result = try await client.get(by: "com.apple.Keynote")
+        let result = try await client.fetchAppInfo(by: "com.apple.Keynote")
         XCTAssertEqual(result.bundleId, "com.apple.Keynote")
         XCTAssertEqual(result.version, "14.0")
         XCTAssertEqual(result.currentVersionReleaseDate, "2024-04-02T15:31:46Z")
@@ -14,7 +14,7 @@ final class ITunesSearchClientTests: XCTestCase {
     func testGetByBundleIdAndCountryCode() async throws {
         let mockClient = MockClient()
         let client = ITunesSearchClient(client: mockClient)
-        let result = try await client.get(by: "com.apple.Keynote", "us")
+        let result = try await client.fetchAppInfo(by: "com.apple.Keynote", "us")
         XCTAssertEqual(result.bundleId, "com.apple.Keynote")
         XCTAssertEqual(result.version, "14.0")
         XCTAssertEqual(result.currentVersionReleaseDate, "2024-04-02T15:31:46Z")
@@ -24,10 +24,10 @@ final class ITunesSearchClientTests: XCTestCase {
         let mockClient = MockClient()
         let client = ITunesSearchClient(client: mockClient)
         do {
-            _ = try await client.get(by: "com.apple.Some")
+            _ = try await client.fetchAppInfo(by: "com.apple.Some")
             XCTFail("Expected error not thrown")
         } catch {
-            XCTAssertEqual(error.localizedDescription, ITunesSearchClientError.invalidResponse.localizedDescription)
+            XCTAssertEqual(error.localizedDescription, ITunesSearchClientError.notFound.localizedDescription)
         }
     }
 }
