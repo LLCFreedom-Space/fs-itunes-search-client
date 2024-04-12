@@ -9,7 +9,7 @@
 ![example workflow](https://github.com/LLCFreedom-Space/fs-itunes-search-client/actions/workflows/test.yml/badge.svg?branch=main)
  [![codecov](https://codecov.io/github/LLCFreedom-Space/fs-itunes-search-client/graph/badge.svg?token=2EUIA4OGS9)](https://codecov.io/github/LLCFreedom-Space/fs-itunes-search-client)
 
-This Swift package provides a client library for interacting with the iTunes Search API. It leverages the power of Swift OpenAPI Generator to automatically generate code from the provided OpenAPI specification file (openapi.yaml).
+This Swift package provides a client library for interacting with the iTunes Search API. It leverages the power of [Swift OpenAPI Generator](https://github.com/apple/swift-openapi-generator/tree/main) to automatically generate code from the provided OpenAPI specification file (openapi.yaml).
 
 ## Features
 
