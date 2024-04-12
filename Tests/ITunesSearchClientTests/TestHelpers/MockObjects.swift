@@ -199,14 +199,16 @@ enum MockObjects {
             price: 0.00,
             description:
 """
-Keynote is the most powerful presentation app ever designed for a mobile device.\n\nStart with an Apple-designed theme and add text, images, charts, tables, and shapes with just a few taps.
+Keynote is the most powerful presentation app ever designed for a mobile device.
+Start with an Apple-designed theme and add text, images, charts, tables, and shapes with just a few taps.
 Draw and write with Apple Pencil on iPad, or use your finger.
 Bring it all to life with cinematic animations and transitions that look as though they were created by your own special effects team.
 Add live video to your slideshow and appear right on your slides in remote presentations, how-to videos, and lectures.
 Confidently present to your audience from anywhere, in person or virtually, and take turns controlling a presentation in multi-presenter slideshows.
 Collaborate with others at the same time
 • With real-time collaboration, your whole team can work together on a presentation at the same time on Mac, iPad, iPhone, and even on a PC
-• Share your document publicly or with specific people, see who’s currently in the presentation with you, and view other people’s cursors to follow their edits
+• Share your document publicly or with specific people, see who’s currently in the presentation with you, 
+    and view other people’s cursors to follow their edits
 • See a list of recent changes in collaborative presentations, including when people join, comment, and make edits
 • Available for presentations stored in iCloud or in Box
 Get started quickly
