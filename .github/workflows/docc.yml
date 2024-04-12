@@ -28,7 +28,7 @@ jobs:
       - name: Build All DocC 🛠
         run: |
           swift package resolve;
-          xcodebuild docbuild -scheme fs-itunes-search-client -derivedDataPath /tmp/docbuild -destination 'generic/platform=iOS';
+          xcodebuild docbuild -scheme fs-itunes-search-client -derivedDataPath /tmp/docbuild -destination 'generic/platform=iOS' -skipPackagePluginValidation;
           $(xcrun --find docc) process-archive \
             transform-for-static-hosting /tmp/docbuild/Build/Products/Debug-iphoneos/ITunesSearchClient.doccarchive \
             --output-path docs \
