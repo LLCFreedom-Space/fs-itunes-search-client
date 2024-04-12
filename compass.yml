@@ -1,0 +1,23 @@
+name: fs-itunes-search-client
+id: 'ari:cloud:compass:9f2f3021-6c0c-4d5b-bf04-558f54eb6d69:component/a1dbf0d8-af76-46a1-b26b-63b12025bc76/22f43f76-522e-4edc-a144-699951721980'
+description: >-
+  This Swift package provides a client library for interacting with the iTunes Search API. It leverages the power of Swift OpenAPI Generator to
+  automatically generate code from the provided OpenAPI specification file (openapi.yaml).
+configVersion: 1
+typeId: LIBRARY
+ownerId: 'ari:cloud:teams::team/fcc4f8ef-8527-4eb0-9a5e-6515cb346bcc'
+fields:
+  tier: 1
+  lifecycle: Active
+links:
+  - name: null
+    type: REPOSITORY
+    url: 'https://github.com/LLCFreedom-Space/fs-itunes-search-client'
+relationships: {}
+labels:
+  - 'language:swift'
+  - 'source:github'
+customFields: null
+
+# Learn more about formatting compass.yml:
+# https://go.atlassian.com/compass-yml-format
