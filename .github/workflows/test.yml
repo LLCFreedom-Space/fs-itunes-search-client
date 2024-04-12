@@ -30,4 +30,4 @@ jobs:
         with:
           files: ${{ join(fromJSON(steps.coverage-files.outputs.files), ',') }}
       - name: Test macOS
-        run: xcodebuild test -scheme fs-itunes-search-client -destination "platform=macOS" -enableCodeCoverage YES
+        run: xcodebuild test -scheme fs-itunes-search-client -destination "platform=macOS" -enableCodeCoverage YES -skipPackagePluginValidation
