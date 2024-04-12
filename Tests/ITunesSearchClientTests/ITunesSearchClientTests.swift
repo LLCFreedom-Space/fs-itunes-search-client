@@ -32,7 +32,8 @@ final class ITunesSearchClientTests: XCTestCase {
             _ = try await client.fetchAppInfo(by: "error")
             XCTFail("Expected error not thrown")
         } catch {
-            XCTAssertEqual(error.localizedDescription, ITunesSearchClientError.serverError(errorCode: 500).localizedDescription)
+            let errorCode = 500
+            XCTAssertEqual(error.localizedDescription, ITunesSearchClientError.serverError(errorCode: errorCode).localizedDescription)
         }
     }
 

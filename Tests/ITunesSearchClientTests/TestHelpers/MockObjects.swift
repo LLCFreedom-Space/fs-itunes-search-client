@@ -7,7 +7,12 @@
 
 @testable import ITunesSearchClient
 
-struct MockObjects {
+enum MockObjects {
+    static let userRatingCountForCurrentVersion = 35335
+    static let userRatingCount = 35335
+    static let primaryGenreId = 6007
+    static let trackId = 361285480
+    static let artistId = 284417353
     static var keynoteResult: Components.Schemas.Result {
         let result = Components.Schemas.Result(
             screenshotUrls: [
@@ -171,7 +176,7 @@ struct MockObjects {
             sellerUrl: "https://www.apple.com/apps/#keynote",
             formattedPrice: "Free",
             contentAdvisoryRating: "4+",
-            userRatingCountForCurrentVersion: 35335,
+            userRatingCountForCurrentVersion: userRatingCountForCurrentVersion,
             trackViewUrl: "https://apps.apple.com/us/app/keynote/id361285480?uo=4",
             trackContentRating: "4+",
             minimumOsVersion: "16.0",
@@ -184,7 +189,7 @@ struct MockObjects {
             • Improved compatibility for slide transitions when importing and exporting Microsoft PowerPoint files
             • Additional stability and performance improvements
 """,
-            artistId: 284417353,
+            artistId: artistId,
             artistName: "Apple",
             genres: [
                 "Productivity",
@@ -243,7 +248,7 @@ Some features may require Internet access; additional fees and terms may apply.
                 "6007",
                 "6000"
             ],
-            trackId: 361285480,
+            trackId: trackId,
             trackName: "Keynote",
             isVppDeviceBasedLicensingEnabled: true,
             bundleId: "com.apple.Keynote",
@@ -251,10 +256,10 @@ Some features may require Internet access; additional fees and terms may apply.
             currency: "USD",
             sellerName: "Apple Inc.",
             primaryGenreName: "Productivity",
-            primaryGenreId: 6007,
+            primaryGenreId: primaryGenreId,
             version: "14.0",
             wrapperType: "software",
-            userRatingCount: 35335
+            userRatingCount: userRatingCount
         )
         return result
     }
