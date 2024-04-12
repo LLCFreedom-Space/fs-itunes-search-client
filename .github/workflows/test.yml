@@ -21,7 +21,7 @@ jobs:
       - name: Swift Lint
         run: swiftlint --strict
       - name: Test iOS
-        run: xcodebuild test -scheme fs-itunes-search-client -destination "platform=iOS Simulator,name=iPhone 15" -enableCodeCoverage YES -skipPackagePluginValidation YES
+        run: xcodebuild test -scheme fs-itunes-search-client -destination "platform=iOS Simulator,name=iPhone 15" -enableCodeCoverage YES -skipPackagePluginValidation
       - name: Fetch Coverage
         uses: sersoft-gmbh/swift-coverage-action@v4
         id: coverage-files
