@@ -37,7 +37,7 @@ public struct ITunesSearchClient: ITunesSearchClientProtocol {
             switch response.body {
             case .json(let json):
                 guard json.results?.count == 1,
-                      let result = json.results?.first(where: {$0.bundleId == bundleId}) else {
+                      let result = json.results?.first(where: { $0.bundleId == bundleId }) else {
                     throw ITunesSearchClientError.notFound
                 }
                 return AppInfo(result)
@@ -47,7 +47,7 @@ public struct ITunesSearchClient: ITunesSearchClientProtocol {
                 let jsonData = Data(jsonText.utf8)
                 let appResponse = try JSONDecoder().decode(Components.Schemas.AppResponse.self, from: jsonData)
                 guard appResponse.results?.count == 1,
-                      let result = appResponse.results?.first(where: {$0.bundleId == bundleId}) else {
+                      let result = appResponse.results?.first(where: { $0.bundleId == bundleId }) else {
                     throw ITunesSearchClientError.notFound
                 }
                 return AppInfo(result)
@@ -57,4 +57,3 @@ public struct ITunesSearchClient: ITunesSearchClientProtocol {
         }
     }
 }
-

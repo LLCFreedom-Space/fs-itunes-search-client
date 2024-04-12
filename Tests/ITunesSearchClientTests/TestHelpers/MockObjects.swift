@@ -181,13 +181,14 @@ enum MockObjects {
             trackContentRating: "4+",
             minimumOsVersion: "16.0",
             currentVersionReleaseDate: "2024-04-02T15:31:46Z",
-            releaseNotes: """
-            • Add a new look to your slides with the Dynamic Color, Minimalist Light, and Minimalist Dark themes
-            • Streamlined in-app notifications inform you when a person joins a collaborative presentation for the first time
-            • Preserve file format and full quality when adding HEIC photos taken on iPhone or iPad
-            • On iPad, press and hold the Command key on a connected keyboard to select noncontiguous words, sentences, or paragraphs using a trackpad or mouse
-            • Improved compatibility for slide transitions when importing and exporting Microsoft PowerPoint files
-            • Additional stability and performance improvements
+            releaseNotes:
+"""
+• Add a new look to your slides with the Dynamic Color, Minimalist Light, and Minimalist Dark themes
+• Streamlined in-app notifications inform you when a person joins a collaborative presentation for the first time
+• Preserve file format and full quality when adding HEIC photos taken on iPhone or iPad
+• On iPad, press and hold the Command key on a connected keyboard to select noncontiguous words, sentences, or paragraphs using a trackpad or mouse
+• Improved compatibility for slide transitions when importing and exporting Microsoft PowerPoint files
+• Additional stability and performance improvements
 """,
             artistId: artistId,
             artistName: "Apple",
@@ -196,7 +197,8 @@ enum MockObjects {
                 "Business"
             ],
             price: 0.00,
-            description: """
+            description:
+"""
 Keynote is the most powerful presentation app ever designed for a mobile device.\n\nStart with an Apple-designed theme and add text, images, charts, tables, and shapes with just a few taps.
 Draw and write with Apple Pencil on iPad, or use your finger.
 Bring it all to life with cinematic animations and transitions that look as though they were created by your own special effects team.
