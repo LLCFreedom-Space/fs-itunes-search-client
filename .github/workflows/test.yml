@@ -1,0 +1,33 @@
+name: Test all  platforms
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+# Allow one concurrent deployment
+concurrency:
+  group: "testing"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: macOS-13
+    steps:
+      - uses: actions/checkout@v4
+      - name: Switch Xcode 🔄
+        run: sudo xcode-select --switch /Applications/Xcode_15.0.app
+      - name: Swift Lint
+        run: swiftlint --strict
+      - name: Test iOS
+        run: xcodebuild test -scheme fs-itunes-search-client -destination "platform=iOS Simulator,name=iPhone 15" -enableCodeCoverage YES
+      - name: Fetch Coverage
+        uses: sersoft-gmbh/swift-coverage-action@v4
+        id: coverage-files
+      - name: Publish Coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ${{ join(fromJSON(steps.coverage-files.outputs.files), ',') }}
+      - name: Test macOS
+        run: xcodebuild test -scheme fs-itunes-search-client -destination "platform=macOS" -enableCodeCoverage YES

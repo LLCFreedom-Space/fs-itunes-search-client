@@ -1,0 +1,17 @@
+name: Lint code
+
+on: push
+
+# Allow one concurrent deployment
+concurrency:
+  group: "linting"
+  cancel-in-progress: true
+
+jobs:
+  SwiftLint:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Lint code using SwiftLint
+        run: swiftlint lint --reporter github-actions-logging
