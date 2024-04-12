@@ -22,7 +22,8 @@ struct MockClient: APIProtocol {
         case "json":
             return .ok(.init(body: .json(MockObjects.appResponse)))
         default:
-            return .default(statusCode: 500, .init())
+            let statusCode = 500
+            return .default(statusCode: statusCode, .init())
         }
     }
 }
