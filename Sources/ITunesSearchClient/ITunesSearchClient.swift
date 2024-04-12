@@ -2,19 +2,6 @@ import OpenAPIRuntime
 import Foundation
 import OpenAPIURLSession
 
-/// A protocol defining the contract for searching the iTunes App Store.
-public protocol ITunesSearchClientProtocol {
-    /// Fetches information about an app based on its bundle ID and optional country code.
-    ///
-    /// - Parameters:
-    ///   - bundleId: The unique identifier of the app in the App Store.
-    ///   - countryCode: The two-letter code representing the country to search in (optional). Defaults to nil.
-    /// - Throws:
-    ///   - ITunesSearchClientError: An error that may occur during the search process.
-    /// - Returns: An `AppInfo` object containing details about the retrieved app.
-    func fetchAppInfo(by bundleId: String, _ countryCode: String?) async throws -> AppInfo
-}
-
 /// A concrete implementation of `ITunesSearchClientProtocol` for interacting with the iTunes Search API.
 public struct ITunesSearchClient: ITunesSearchClientProtocol {
     private let client: any APIProtocol
@@ -71,29 +58,3 @@ public struct ITunesSearchClient: ITunesSearchClientProtocol {
     }
 }
 
-/// An enumeration of errors that may occur during interactions with the iTunes Search API.
-public enum ITunesSearchClientError: Error {
-    /// A server-side error occurred, indicated by the provided status code.
-    case serverError(errorCode: Int)
-    /// No results were found for the specified bundle ID and country code.
-    case notFound
-}
-
-/// A model representing information about an app retrieved from the iTunes App Store.
-public struct AppInfo {
-    /// The version of the app.
-    public let version: String?
-    /// The bundle ID of the app.
-    public let bundleId: String?
-    /// The date the current version of the app was released.
-    public let currentVersionReleaseDate: String?
-    
-    /// Initializes a new `AppInfo` instance from a `Components.Schemas.Result` object.
-    ///
-    /// - Parameter result: The `Components.Schemas.Result` object containing the app information.
-    init(_ result: Components.Schemas.Result) {
-        self.version = result.version
-        self.bundleId = result.bundleId
-        self.currentVersionReleaseDate = result.currentVersionReleaseDate
-    }
-}
