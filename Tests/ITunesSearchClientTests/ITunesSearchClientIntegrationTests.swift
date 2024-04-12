@@ -11,7 +11,7 @@ import XCTest
 final class ITunesSearchClientIntegrationTests: XCTestCase {
     func testByBundleId() async throws {
         let client = try ITunesSearchClient()
-        let result = try await client.fetchAppInfo(by: "com.apple.Keynote")
+        let result = try await client.fetchAppInfo(by: "com.apple.Keynote", "us")
         XCTAssertEqual(result.bundleId, "com.apple.Keynote")
         XCTAssertNotNil(result.version)
         XCTAssertNotNil(result.currentVersionReleaseDate)

@@ -3,17 +3,9 @@ import OpenAPIRuntime
 @testable import ITunesSearchClient
 
 final class ITunesSearchClientTests: XCTestCase {
-    func testGetByBundleId() async throws {
-        let mockClient = MockClient()
-        let client = ITunesSearchClient(client: mockClient)
-        let result = try await client.fetchAppInfo(by: "com.apple.Keynote")
-        XCTAssertEqual(result.bundleId, "com.apple.Keynote")
-        XCTAssertEqual(result.version, "14.0")
-        XCTAssertEqual(result.currentVersionReleaseDate, "2024-04-02T15:31:46Z")
-    }
-    
-    func testGetByBundleIdAndCountryCode() async throws {
-        let mockClient = MockClient()
+    func testGetJson() async throws {
+        var mockClient = MockClient()
+        mockClient.resultMediaType = "json"
         let client = ITunesSearchClient(client: mockClient)
         let result = try await client.fetchAppInfo(by: "com.apple.Keynote", "us")
         XCTAssertEqual(result.bundleId, "com.apple.Keynote")
@@ -21,8 +13,9 @@ final class ITunesSearchClientTests: XCTestCase {
         XCTAssertEqual(result.currentVersionReleaseDate, "2024-04-02T15:31:46Z")
     }
     
-    func testGetByBundleIdNotFound() async throws {
-        let mockClient = MockClient()
+    func testGetJsonNotFound() async throws {
+        var mockClient = MockClient()
+        mockClient.resultMediaType = "json"
         let client = ITunesSearchClient(client: mockClient)
         do {
             _ = try await client.fetchAppInfo(by: "com.apple.Some")
@@ -32,7 +25,7 @@ final class ITunesSearchClientTests: XCTestCase {
         }
     }
     
-    func testGetByBundleIdServerError() async throws {
+    func testGetServerError() async throws {
         let mockClient = MockClient()
         let client = ITunesSearchClient(client: mockClient)
         do {
@@ -42,22 +35,48 @@ final class ITunesSearchClientTests: XCTestCase {
             XCTAssertEqual(error.localizedDescription, ITunesSearchClientError.serverError(errorCode: 500).localizedDescription)
         }
     }
+
+    func testGetTextJavascript() async throws {
+        var mockClient = MockClient()
+        mockClient.resultMediaType = "text_javascript"
+        let client = ITunesSearchClient(client: mockClient)
+        let result = try await client.fetchAppInfo(by: "com.apple.Keynote", "us")
+        XCTAssertEqual(result.bundleId, "com.apple.Keynote")
+    }
     
-    func testGetByBundleIdTextJavascriptFailedToDecode() async throws {
-        let mockClient = MockClient()
+    func testGetTextJavascriptNotFound() async throws {
+        var mockClient = MockClient()
+        mockClient.resultMediaType = "text_javascript"
         let client = ITunesSearchClient(client: mockClient)
         do {
-            _ = try await client.fetchAppInfo(by: "failedToDecode")
-            XCTFail("Expected response data error not thrown")
+            _ = try await client.fetchAppInfo(by: "com.apple.Some")
+            XCTFail("Expected error not thrown")
         } catch {
-            XCTAssertEqual(error.localizedDescription, ITunesSearchClientError.failedToDecode().localizedDescription)
+            XCTAssertEqual(error.localizedDescription, ITunesSearchClientError.notFound.localizedDescription)
         }
     }
 }
 
 // A mock client used in previews and tests to avoid making live network calls.
 struct MockClient: APIProtocol {
-    private var keynoteResult: Components.Schemas.Result {
+    var resultMediaType: String?
+    
+    func getByBundleId(_ input: Operations.getByBundleId.Input) async throws -> Operations.getByBundleId.Output {
+        switch resultMediaType {
+        case "text_javascript":
+            let data = try JSONEncoder().encode(MockObjects.appResponse)
+            let body = HTTPBody(data)
+            return .ok(.init(body: .text_javascript(body)))
+        case "json":
+            return .ok(.init(body: .json(MockObjects.appResponse)))
+        default:
+            return .default(statusCode: 500, .init())
+        }
+    }
+}
+
+struct MockObjects {
+    static var keynoteResult: Components.Schemas.Result {
         let result = Components.Schemas.Result(
             screenshotUrls: [
                 "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource122/v4/13/dd/63/13dd63cc-d748-958d-3df5-6849c2db635a/16ed0767-3fa2-4102-8ed3-9852a6845214_1.png/406x228bb.png",
@@ -308,21 +327,8 @@ Some features may require Internet access; additional fees and terms may apply.
         return result
     }
     
-    func getByBundleId(_ input: Operations.getByBundleId.Input) async throws -> Operations.getByBundleId.Output {
-        switch input.query.bundleId {
-        case "com.apple.Keynote":
-            return .ok(.init(body: .json(Components.Schemas.AppResponse(resultCount: 1, results: [keynoteResult]))))
-        case "error":
-            return .default(statusCode: 500, .init())
-        case "largeResponse": // For testing maximum bytes exceeded
-            let largeBody = HTTPBody() // Creating a large response body
-            return .ok(.init(body: .text_javascript(largeBody)))
-        case "failedToDecode":
-            let data = try JSONEncoder().encode(keynoteResult)
-            let body = HTTPBody(data)
-            return .ok(.init(body: .text_javascript(body)))
-        default:
-            return .ok(.init(body: .json(Components.Schemas.AppResponse(resultCount: 0, results: []))))
-        }
+    static var appResponse: Components.Schemas.AppResponse {
+        let response = Components.Schemas.AppResponse(resultCount: 1, results: [keynoteResult])
+        return response
     }
 }

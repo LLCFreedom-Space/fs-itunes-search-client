@@ -56,19 +56,14 @@ public struct ITunesSearchClient: ITunesSearchClientProtocol {
                 return AppInfo(result)
             case .text_javascript(let body):
                 let bytes = 12000 // Maximum bytes to attempt parsing
-                guard let jsonData = try await String(collecting: body, upTo: bytes).data(using: .utf8) else {
-                    throw ITunesSearchClientError.failedToGetResponseData
+                let jsonText = try await String(collecting: body, upTo: bytes)
+                let jsonData = Data(jsonText.utf8)
+                let appResponse = try JSONDecoder().decode(Components.Schemas.AppResponse.self, from: jsonData)
+                guard appResponse.results?.count == 1,
+                      let result = appResponse.results?.first(where: {$0.bundleId == bundleId}) else {
+                    throw ITunesSearchClientError.notFound
                 }
-                do {
-                    let appResponse = try JSONDecoder().decode(Components.Schemas.AppResponse.self, from: jsonData)
-                    guard appResponse.results?.count == 1,
-                          let result = appResponse.results?.first(where: {$0.bundleId == bundleId}) else {
-                        throw ITunesSearchClientError.notFound
-                    }
-                    return AppInfo(result)
-                } catch {
-                    throw ITunesSearchClientError.failedToDecode(underlyingError: error)
-                }
+                return AppInfo(result)
             }
         case .default(let statusCode, _):
             throw ITunesSearchClientError.serverError(errorCode: statusCode)
@@ -80,12 +75,8 @@ public struct ITunesSearchClient: ITunesSearchClientProtocol {
 public enum ITunesSearchClientError: Error {
     /// A server-side error occurred, indicated by the provided status code.
     case serverError(errorCode: Int)
-    /// An error occurred while decoding the JSON response from the API.
-    case failedToDecode(underlyingError: Error? = nil)
     /// No results were found for the specified bundle ID and country code.
     case notFound
-    /// An error occurred while attempting to retrieve the response data.
-    case failedToGetResponseData
 }
 
 /// A model representing information about an app retrieved from the iTunes App Store.
