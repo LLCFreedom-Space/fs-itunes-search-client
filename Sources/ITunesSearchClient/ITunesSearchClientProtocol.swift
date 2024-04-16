@@ -24,7 +24,7 @@
 
 import Foundation
 
-/// A protocol defining the contract for searching the iTunes App Store.
+/// A protocol defining the interface for searching the iTunes App Store.
 public protocol ITunesSearchClientProtocol {
     /// Fetches information about an app based on its bundle ID and optional country code.
     ///
