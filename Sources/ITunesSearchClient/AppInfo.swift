@@ -17,7 +17,7 @@
 
 //
 //  AppInfo.swift
-//  
+//
 //
 //  Created by Mykhailo Bondarenko on 12.04.2024.
 //
@@ -40,5 +40,20 @@ public struct AppInfo {
         self.version = result.version
         self.bundleId = result.bundleId
         self.currentVersionReleaseDate = result.currentVersionReleaseDate
+    }
+    
+    /// Initializes a new `AppInfo` instance with optional parameters.
+    /// - Parameters:
+    ///   - version: The version of the app.
+    ///   - bundleId: The bundle ID of the app.
+    ///   - currentVersionReleaseDate: The date the current version of the app was released in ISO 8601 format (YYYY-MM-DD).
+    public init(
+        version: String? = nil,
+        bundleId: String? = nil,
+        currentVersionReleaseDate: String? = nil
+    ) {
+        self.version = version
+        self.bundleId = bundleId
+        self.currentVersionReleaseDate = currentVersionReleaseDate
     }
 }
