@@ -26,4 +26,4 @@ jobs:
         run: swiftlint version
 
       - name: Run SwiftLint
-        run: swiftlint --config .swiftlint.yml
+        run: swiftlint --config .swiftlint.yml --strict
