@@ -45,16 +45,21 @@ public struct ITunesSearchClient: ITunesSearchClientProtocol {
         )
     }
     
-    /// Fetches information about an app based on its bundle ID and optional country code.
+    /// Fetches information about an app based on its bundle ID and optional country code with optional entity type.
     ///
     /// - Parameters:
     ///   - bundleId: The unique identifier of the app in the App Store.
     ///   - countryCode: The two-letter code representing the country to search in (optional). Defaults to nil.
+    ///   - entity: The media entity type used to refine the lookup request (desktopSoftware for macOS). Defaults to nil.
     /// - Throws:
     ///   - ITunesSearchClientError: An error that may occur during the search process.
     /// - Returns: An `AppInfo` object containing details about the retrieved app.
-    public func fetchAppInfo(by bundleId: String, _ countryCode: String? = nil) async throws -> AppInfo {
-        let query = Operations.getByBundleId.Input.Query(bundleId: bundleId, country: countryCode)
+    public func fetchAppInfo(
+        by bundleId: String,
+        _ countryCode: String? = nil,
+        for entity: String? = nil
+    ) async throws -> AppInfo {
+        let query = Operations.getByBundleId.Input.Query(bundleId: bundleId, country: countryCode, entity: entity)
         let result = try await client.getByBundleId(query: query)
         switch result {
         case .ok(let response):

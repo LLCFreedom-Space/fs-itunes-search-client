@@ -37,6 +37,16 @@ final class ITunesSearchClientTests: XCTestCase {
         XCTAssertEqual(result.currentVersionReleaseDate, "2024-04-02T15:31:46Z")
     }
     
+    func testGetJsonWithEntity() async throws {
+        var mockClient = MockClient()
+        mockClient.resultMediaType = "json"
+        let client = ITunesSearchClient(client: mockClient)
+        let result = try await client.fetchAppInfo(by: "com.apple.Keynote", "us", for: "desktopSoftware")
+        XCTAssertEqual(result.bundleId, "com.apple.Keynote")
+        XCTAssertEqual(result.version, "14.0")
+        XCTAssertEqual(result.currentVersionReleaseDate, "2024-04-02T15:31:46Z")
+    }
+    
     func testGetJsonNotFound() async throws {
         var mockClient = MockClient()
         mockClient.resultMediaType = "json"
@@ -66,6 +76,14 @@ final class ITunesSearchClientTests: XCTestCase {
         mockClient.resultMediaType = "text_javascript"
         let client = ITunesSearchClient(client: mockClient)
         let result = try await client.fetchAppInfo(by: "com.apple.Keynote", "us")
+        XCTAssertEqual(result.bundleId, "com.apple.Keynote")
+    }
+    
+    func testGetTextJavascriptWithEntity() async throws {
+        var mockClient = MockClient()
+        mockClient.resultMediaType = "text_javascript"
+        let client = ITunesSearchClient(client: mockClient)
+        let result = try await client.fetchAppInfo(by: "com.apple.Keynote", "us", for: "desktopSoftware")
         XCTAssertEqual(result.bundleId, "com.apple.Keynote")
     }
     

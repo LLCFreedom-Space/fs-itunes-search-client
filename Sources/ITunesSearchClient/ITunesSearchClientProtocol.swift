@@ -26,13 +26,14 @@ import Foundation
 
 /// A protocol defining the interface for searching the iTunes App Store.
 public protocol ITunesSearchClientProtocol {
-    /// Fetches information about an app based on its bundle ID and optional country code.
+    /// Fetches information about an app based on its bundle ID and optional country code with optional entity type.
     ///
     /// - Parameters:
     ///   - bundleId: The unique identifier of the app in the App Store.
     ///   - countryCode: The two-letter code representing the country to search in (optional). Defaults to nil.
+    ///   - entity: The media entity type used to refine the lookup request (desktopSoftware for macOS). Defaults to nil.
     /// - Throws:
     ///   - ITunesSearchClientError: An error that may occur during the search process.
     /// - Returns: An `AppInfo` object containing details about the retrieved app.
-    func fetchAppInfo(by bundleId: String, _ countryCode: String?) async throws -> AppInfo
+    func fetchAppInfo(by bundleId: String, _ countryCode: String?, for entity: String?) async throws -> AppInfo
 }
