@@ -1,45 +1,67 @@
 name: Deploy DocC
 
 on:
-  # Runs on pushes targeting the default branch
   push:
-    branches: ["main"]
+    branches:
+      - main
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow one concurrent deployment
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: true
 
 jobs:
   deploy:
+    runs-on: macos-15
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: macos-14
-    steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v3
-      - name: Build All DocC 🛠
-        run: |
-          swift package resolve;
-          xcodebuild docbuild -scheme fs-itunes-search-client -derivedDataPath /tmp/docbuild -destination 'generic/platform=iOS' -skipPackagePluginValidation;
-          $(xcrun --find docc) process-archive \
-            transform-for-static-hosting /tmp/docbuild/Build/Products/Debug-iphoneos/ITunesSearchClient.doccarchive \
-            --output-path docs \
-            --hosting-base-path fs-itunes-search-client;
-          echo "<script>window.location.href += \"/documentation/itunessearchclient\"</script>" > docs/index.html;
 
-      - name: Upload artifact 📜
-        uses: actions/upload-pages-artifact@v1
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: |
+          sudo xcode-select -s /Applications/Xcode.app
+          xcodebuild -version
+
+      - name: Resolve dependencies
+        run: swift package resolve
+
+      - name: Build DocC archive
+        run: |
+          xcodebuild docbuild \
+            -scheme fs-itunes-search-client \
+            -destination "generic/platform=iOS" \
+            -derivedDataPath .derivedData \
+            -skipPackagePluginValidation
+
+      - name: Convert for GitHub Pages
+        run: |
+          $(xcrun --find docc) process-archive transform-for-static-hosting \
+            .derivedData/Build/Products/Debug-iphoneos/ITunesSearchClient.doccarchive \
+            --output-path docs \
+            --hosting-base-path fs-itunes-search-client
+
+          cat > docs/index.html <<'EOF'
+          <!doctype html>
+          <html>
+          <head>
+            <meta http-equiv="refresh" content="0; url=documentation/itunessearchclient/">
+          </head>
+          </html>
+          EOF
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          # Upload docs directory
-          path: 'docs'
-      - name: Deploy to GitHub Pages 🐙
+          path: docs
+
+      - name: Deploy Pages
         id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v4
