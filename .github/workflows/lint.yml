@@ -1,17 +1,29 @@
 name: Lint code
 
-on: push
+on:
+  push:
 
-# Allow one concurrent deployment
 concurrency:
   group: "linting"
   cancel-in-progress: true
 
 jobs:
   SwiftLint:
-    runs-on: macos-latest
+    runs-on: macOS-13
     steps:
-      - uses: actions/checkout@v1
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Lint code using SwiftLint
-        run: swiftlint lint --reporter github-actions-logging
+      - name: Select Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Install SwiftLint
+        run: brew install swiftlint
+
+      - name: Verify SwiftLint version
+        run: swiftlint version
+
+      - name: Run SwiftLint
+        run: swiftlint --config .swiftlint.yml
