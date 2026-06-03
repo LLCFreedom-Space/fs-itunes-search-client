@@ -52,6 +52,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ${{ steps.coverage-files.outputs.files }}
           flags: macos
+          fail_ci_if_error: false
 
 # =========================
 # iOS
@@ -98,3 +99,4 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ${{ steps.coverage-files.outputs.files }}
           flags: ios
+          fail_ci_if_error: false
