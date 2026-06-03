@@ -13,7 +13,7 @@ concurrency:
 jobs:
 
   ios-tests:
-    name: iOS Tests
+    name: iOS
     runs-on: macos-14
 
     steps:
@@ -41,7 +41,7 @@ jobs:
 
 
   macos-tests:
-    name: macOS Tests
+    name: macOS
     runs-on: macos-14
 
     steps:
