@@ -1,4 +1,4 @@
-name: Tests
+name: Test all  platforms
 
 on:
   push:
@@ -12,33 +12,20 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  ios:
+  build:
     runs-on: macOS-13
     steps:
       - uses: actions/checkout@v4
-
       - name: Switch Xcode 🔄
         run: sudo xcode-select --switch /Applications/Xcode_15.0.app
-
       - name: Test iOS
         run: xcodebuild test -scheme fs-itunes-search-client -destination "platform=iOS Simulator,name=iPhone 15" -enableCodeCoverage YES -skipPackagePluginValidation
-
       - name: Fetch Coverage
         uses: sersoft-gmbh/swift-coverage-action@v4
         id: coverage-files
-
       - name: Publish Coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
           files: ${{ join(fromJSON(steps.coverage-files.outputs.files), ',') }}
-
-  macos:
-    runs-on: macOS-13
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Switch Xcode 🔄
-        run: sudo xcode-select --switch /Applications/Xcode_15.0.app
-
       - name: Test macOS
         run: xcodebuild test -scheme fs-itunes-search-client -destination "platform=macOS" -enableCodeCoverage YES -skipPackagePluginValidation
