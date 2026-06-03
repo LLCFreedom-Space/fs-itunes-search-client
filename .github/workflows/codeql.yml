@@ -15,7 +15,7 @@ concurrency:
 jobs:
   analyze:
     name: Analyze
-    runs-on: macos-15
+    runs-on: latest-stable
     permissions:
       security-events: write
 
