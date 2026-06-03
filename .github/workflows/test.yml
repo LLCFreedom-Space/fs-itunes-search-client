@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: latest-stable
+    runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
       - name: Switch Xcode 🔄
