@@ -98,4 +98,15 @@ final class ITunesSearchClientTests: XCTestCase {
             XCTAssertEqual(error.localizedDescription, ITunesSearchClientError.notFound.localizedDescription)
         }
     }
+
+    func testAppInfoInit() {
+        let appInfo = AppInfo(
+            version: "14.0",
+            bundleId: "com.apple.Keynote",
+            currentVersionReleaseDate: "2024-04-02T15:31:46Z"
+        )
+        XCTAssertEqual(appInfo.version, "14.0")
+        XCTAssertEqual(appInfo.bundleId, "com.apple.Keynote")
+        XCTAssertEqual(appInfo.currentVersionReleaseDate, "2024-04-02T15:31:46Z")
+    }
 }
