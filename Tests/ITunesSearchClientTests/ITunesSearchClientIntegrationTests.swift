@@ -33,4 +33,12 @@ final class ITunesSearchClientIntegrationTests: XCTestCase {
         XCTAssertNotNil(result.version)
         XCTAssertNotNil(result.currentVersionReleaseDate)
     }
+    
+    func testByBundleIdWithEntity() async throws {
+        let client = try ITunesSearchClient()
+        let result = try await client.fetchAppInfo(by: "com.apple.Keynote", "us", for: "desktopSoftware")
+        XCTAssertEqual(result.bundleId, "com.apple.Keynote")
+        XCTAssertNotNil(result.version)
+        XCTAssertNotNil(result.currentVersionReleaseDate)
+    }
 }

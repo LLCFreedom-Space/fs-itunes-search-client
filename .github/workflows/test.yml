@@ -1,33 +1,89 @@
-name: Test all  platforms
+name: Tests
 
 on:
   push:
-    branches: [ main ]
+    branches: ["main"]
   pull_request:
-    branches: [ main ]
+    branches: ["main"]
 
-# Allow one concurrent deployment
 concurrency:
-  group: "testing"
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+
 jobs:
-  build:
-    runs-on: macOS-13
+
+# =========================
+# iOS
+# =========================
+  ios:
+    name: iOS Tests + Coverage
+    runs-on: macos-15
+
     steps:
-      - uses: actions/checkout@v4
-      - name: Switch Xcode 🔄
-        run: sudo xcode-select --switch /Applications/Xcode_15.0.app
-      - name: Swift Lint
-        run: swiftlint --strict
-      - name: Test iOS
-        run: xcodebuild test -scheme fs-itunes-search-client -destination "platform=iOS Simulator,name=iPhone 15" -enableCodeCoverage YES -skipPackagePluginValidation
-      - name: Fetch Coverage
-        uses: sersoft-gmbh/swift-coverage-action@v4
-        id: coverage-files
-      - name: Publish Coverage to Codecov
-        uses: codecov/codecov-action@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache SwiftPM
+        uses: actions/cache@v4
         with:
-          files: ${{ join(fromJSON(steps.coverage-files.outputs.files), ',') }}
-      - name: Test macOS
-        run: xcodebuild test -scheme fs-itunes-search-client -destination "platform=macOS" -enableCodeCoverage YES -skipPackagePluginValidation
+          path: |
+            .build
+            .derived-data
+          key: ${{ runner.os }}-ios-${{ hashFiles('Package.resolved') }}
+
+      - name: Run iOS tests
+        run: |
+          xcodebuild test \
+            -scheme fs-itunes-search-client \
+            -destination "platform=iOS Simulator,name=iPhone 16" \
+            -enableCodeCoverage YES \
+            -derivedDataPath .derived-data \
+            -skipPackagePluginValidation
+
+      - name: Extract iOS Coverage
+        id: coverage
+        uses: sersoft-gmbh/swift-coverage-action@v4
+
+      - name: Upload iOS Coverage
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ${{ steps.coverage.outputs.files }}
+          flags: ios
+          name: ios-coverage
+          fail_ci_if_error: false
+
+
+# =========================
+# macOS
+# =========================
+  macos:
+    name: macOS Tests + Coverage
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cache SwiftPM
+        uses: actions/cache@v4
+        with:
+          path: .build
+          key: ${{ runner.os }}-macos-${{ hashFiles('Package.resolved') }}
+
+      - name: Run macOS tests
+        run: swift test -v --enable-code-coverage
+
+      - name: Extract macOS Coverage
+        id: coverage
+        uses: sersoft-gmbh/swift-coverage-action@v4
+
+      - name: Upload macOS Coverage
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ${{ steps.coverage.outputs.files }}
+          flags: macos
+          name: macos-coverage
+          fail_ci_if_error: false
